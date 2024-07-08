@@ -87,7 +87,7 @@ const Map = ({ earthquakes }: MapProps) => {
   return (
     <div
       style={{
-        height: '100vh',
+        height: 'calc(100vh - 60px)',
       }}
       ref={mapContainerRef}
     >
