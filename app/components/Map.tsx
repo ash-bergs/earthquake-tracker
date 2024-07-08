@@ -99,7 +99,7 @@ const Map = ({ earthquakes }: MapProps) => {
         }}
         style={{ width: '100%', height: '100%' }}
         mapStyle="mapbox://styles/mapbox/dark-v11"
-        mapboxAccessToken="pk.eyJ1IjoiYXNoYmVyZ3MiLCJhIjoiY2x3Mjh4aDV6MGp1aDJqbHJxeW95OGpwMSJ9.rNp6hvB1nXieTAliyqdNmA"
+        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
         interactiveLayerIds={['earthquake-layer']}
         interactive={true}
         onMouseMove={onHover}
