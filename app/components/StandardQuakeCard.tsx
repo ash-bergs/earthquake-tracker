@@ -18,17 +18,21 @@ const StandardQuakeCard = ({ place, mag, time, url }: QuakeCardProps) => {
   const magClass = classNames({
     'bg-green-500': magnitude < 2,
     'bg-yellow-500': magnitude >= 2 && magnitude < 4,
-    'bg-orange-500': magnitude >= 4 && magnitude < 6,
+    'bg-purple-heart-700': magnitude >= 4 && magnitude < 6,
     'bg-red-500': magnitude >= 6,
   });
 
   return (
-    <div className="relative bg-purple-heart-100 rounded-lg shadow-lg cursor-pointer p-3 text-color-purple-heart-950">
+    <div className="relative bg-black-100 rounded-lg shadow-lg p-3 text-color-purple-heart-950 w-[200px] transform transition-transform duration-300 hover:scale-105">
       <div
-        className={classNames('p-[2px] px-[6px] w-min rounded-lg', magClass)}
+        className={classNames(
+          'flex place-content-center p-[2px] mx-[16px] shadow-sm rounded-lg',
+          magClass
+        )}
       >
         <p
           style={{
+            fontSize: '22px',
             fontWeight: 'bold',
             color: 'white',
           }}
@@ -38,11 +42,11 @@ const StandardQuakeCard = ({ place, mag, time, url }: QuakeCardProps) => {
       </div>
 
       {/** divider */}
-      <div>
+      <div className="flex flex-col gap-1 pt-2 text-purple-heart-950">
         <p>{name}</p>
         <p>{new Date(time).toLocaleString()}</p>
 
-        <Link href={url} target="_blank">
+        <Link className="underline " href={url} target="_blank">
           Details
         </Link>
       </div>

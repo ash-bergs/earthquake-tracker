@@ -12,3 +12,12 @@ export const mapRefAtom = atom<MapRef | null>(null);
 // this makes it so we can perform actions without passing them from the map
 export const useMap = () => useAtomValue(mapRefAtom);
 export const setMap = () => useSetAtom(mapRefAtom);
+
+// Sneaky helpers
+
+export const currentDateAtom = atom(new Date());
+
+// current date gets the date and returns as a string
+export const currentDateStringAtom = atom((get) =>
+  get(currentDateAtom).toDateString()
+);
