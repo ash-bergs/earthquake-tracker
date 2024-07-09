@@ -24,8 +24,8 @@ const FactsPageContent = ({
 
   return (
     <main className="flex flex-col gap-4 bg-black-900 h-screen text-white p-10 ">
-      <h1 className="text-5xl">{currentDate}</h1>
-      <div className="relative flex justify-center items-center gap-2 p-4 bg-black-100 text-purple-heart-900 w-[400px] h-[120px] shadow-lg rounded-lg">
+      <h1 className="text-5xl">Overview - {currentDate}</h1>
+      <div className="relative flex justify-center items-center gap-2 p-16 bg-black-100 text-purple-heart-900 w-[300px]  shadow-lg rounded-lg">
         <p className="absolute text-sm text-black-700 top-3 left-4">
           Earthquakes Today
         </p>
