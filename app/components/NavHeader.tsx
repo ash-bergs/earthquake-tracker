@@ -8,7 +8,7 @@ const NavHeader = () => {
       <Link className="text-white" href="/">
         Earthquake Tracker
       </Link>
-      <Link className="text-white" href="/todays-stats">
+      <Link className="text-white" href="/facts">
         Daily Breakdown
       </Link>
     </div>
