@@ -39,3 +39,5 @@ export const fetchAndProcessEarthquakes =
 
     return { earthquakes, topMagnitudeEvents, totalCount };
   };
+
+// what other endpoints are there? Can we get historical data? Like the total count for x-amount of time?

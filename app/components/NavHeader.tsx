@@ -1,16 +1,13 @@
 'use client';
 import Link from 'next/link';
+import { FaEarthAsia } from 'react-icons/fa6';
 
 const NavHeader = () => {
   return (
-    <div className="flex h-[60px] bg-purple-heart-950 gap-4 px-4 py-4">
-      <div className="w-[25px] bg-gray-500 " />
-      <Link className="text-white" href="/">
-        Earthquake Tracker
-      </Link>
-      <Link className="text-white" href="/facts">
-        Daily Breakdown
-      </Link>
+    <div className="flex items-center h-[60px] bg-purple-heart-950 gap-4 px-4 py-4 text-white text-lg">
+      <FaEarthAsia size="25px" color="white" />
+      <Link href="/">Earthquake Tracker</Link>
+      <Link href="/facts">Daily Breakdown</Link>
     </div>
   );
 };
