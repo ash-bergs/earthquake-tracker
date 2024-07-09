@@ -91,15 +91,7 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
 //TODO: add sorting, mass delete
 const QuakeCards = () => {
   const earthquakes = useAtomValue(selectedEarthquakesAtom);
-  const setSelectedEarthquakes = useSetAtom(selectedEarthquakesAtom);
 
-  const removeQuake = (quake: any) => {
-    setSelectedEarthquakes((prevFeatures) =>
-      prevFeatures.filter(
-        (feature: any) => feature.properties.code !== quake.properties.code
-      )
-    );
-  };
   // return a map tool icon when null, or closed
   if (!earthquakes.length) return null;
   return (
