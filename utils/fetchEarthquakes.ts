@@ -27,16 +27,6 @@ export const fetchAndProcessEarthquakes =
     );
 
     const earthquakes = res.data.features;
-    // reduce the earthquakes array to one - the one with the highest magnitude
-    // on second thought - let's get the top 5 events
-    // const highestMagnitude = earthquakes.reduce(
-    //   (acc: EarthquakeFeature, curr: EarthquakeFeature) => {
-    //     if (acc.properties?.mag > curr.properties?.mag) {
-    //       return acc;
-    //     }
-    //     return curr;
-    //   }
-    // );
     const topMagnitudeEvents = earthquakes
       // sort array based on magnitude, in descending order
       .sort(
@@ -45,7 +35,6 @@ export const fetchAndProcessEarthquakes =
       )
       // take the top 5
       .slice(0, 5);
-
     const totalCount = earthquakes.length;
 
     return { earthquakes, topMagnitudeEvents, totalCount };
