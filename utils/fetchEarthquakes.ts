@@ -11,7 +11,7 @@ export const fetchEarthquakes = async (): Promise<Earthquakes> => {
 };
 
 /** Fetch all the highest magnitude earthquakes from the last week */
-export const fetchLastWeekHighMagnitudeEarthquakes =
+export const fetchLastWeekTopMagnitudeEarthquakes =
   async (): Promise<Earthquakes> => {
     const res = await axios.get(
       'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson'
@@ -19,7 +19,7 @@ export const fetchLastWeekHighMagnitudeEarthquakes =
 
     const earthquakes = res.data.features;
     // sort and return 4, like the other function
-    const top4highestMagnitude = earthquakes
+    const weeklyTopMagnitudeEvents = earthquakes
       // sort array based on magnitude, in descending order
       .sort(
         (a: EarthquakeFeature, b: EarthquakeFeature) =>
@@ -28,7 +28,7 @@ export const fetchLastWeekHighMagnitudeEarthquakes =
       // take the top 5
       .slice(0, 4);
 
-    return top4highestMagnitude;
+    return weeklyTopMagnitudeEvents;
   };
 
 // Right now we don't have this wired up to a database

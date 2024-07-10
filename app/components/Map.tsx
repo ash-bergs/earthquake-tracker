@@ -21,7 +21,8 @@ type PopupInfo = {
   x: number;
   y: number;
 };
-
+// TODO: breakout the layers
+// TODO: Add a layer for the weeks high magnitude events
 const Map = ({ earthquakes }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapRef | null>(null);
