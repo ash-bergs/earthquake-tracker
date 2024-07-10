@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-
+// TODO: add text shadow utility
 const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -35,6 +35,15 @@ const config: Config = {
           '900': '#333346',
           '950': '#020203',
         },
+      },
+      keyframes: {
+        slideUp: {
+          '0%': { transform: 'translateY(100%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+      },
+      animation: {
+        slideUp: 'slideUp 0.3s ease-out forwards',
       },
     },
   },
