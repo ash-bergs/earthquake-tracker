@@ -4,6 +4,8 @@ import { MapRef } from 'react-map-gl';
 
 export const earthquakesAtom = atom<Feature<Point>[]>([]);
 
+export const weeklyTopMagnitudeEventsAtom = atom<Feature<Point>[]>([]);
+
 export const selectedEarthquakesAtom = atom<Feature<Point>[]>([]);
 
 export const mapRefAtom = atom<MapRef | null>(null);
