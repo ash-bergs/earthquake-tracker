@@ -18,8 +18,8 @@ const StandardQuakeCard = ({ place, mag, time, url }: QuakeCardProps) => {
   const magClass = classNames({
     'bg-green-500': magnitude < 2,
     'bg-yellow-500': magnitude >= 2 && magnitude < 4,
-    'bg-purple-heart-700': magnitude >= 4 && magnitude < 6,
-    'bg-red-500': magnitude >= 6,
+    'bg-orange-400': magnitude >= 4 && magnitude < 6,
+    'bg-red-400': magnitude >= 6,
   });
 
   return (

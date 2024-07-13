@@ -50,10 +50,10 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
 
   return (
     <div
-      className="relative bg-purple-heart-100 rounded-lg shadow-lg cursor-pointer p-3 text-color-purple-heart-950"
+      className="relative bg-gray-100 rounded-lg shadow-lg cursor-pointer p-3 text-color-purple-heart-950"
       onClick={() => onZoom(coords)}
     >
-      <button
+      {/* <button
         className="absolute top-[10px] right-[10px]"
         onClick={(e) => {
           removeQuake();
@@ -61,12 +61,16 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
         }}
       >
         <AiOutlineClose color="#5236cc" />
-      </button>
+      </button> */}
       <div
-        className={classNames('p-[2px] px-[6px] w-min rounded-lg', magClass)}
+        className={classNames(
+          'flex place-content-center p-[2px] mx-[16px] shadow-sm rounded-lg',
+          magClass
+        )}
       >
         <p
           style={{
+            fontSize: '22px',
             fontWeight: 'bold',
             color: 'white',
           }}
@@ -76,8 +80,8 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
       </div>
 
       {/** divider */}
-      <div>
-        <p>{name}</p>
+      <div className="text-md p-2">
+        <p className="text-lg font-medium">{name}</p>
         <p>{new Date(time).toLocaleString()}</p>
 
         <Link href={url} target="_blank">
