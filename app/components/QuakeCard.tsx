@@ -3,7 +3,9 @@ import Link from 'next/link';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { selectedEarthquakesAtom, useMap } from '@/store';
 import { parsePlace } from './utils';
-import { AiOutlineClose } from 'react-icons/ai';
+import { FaTrashCan } from 'react-icons/fa6';
+import { FaPaperPlane } from 'react-icons/fa6';
+
 import classNames from 'classnames';
 
 type QuakeCardProps = {
@@ -49,44 +51,52 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
   };
 
   return (
-    <div
-      className="relative bg-gray-100 rounded-lg shadow-lg cursor-pointer p-3 text-color-purple-heart-950"
-      onClick={() => onZoom(coords)}
-    >
-      {/* <button
-        className="absolute top-[10px] right-[10px]"
-        onClick={(e) => {
-          removeQuake();
-          e.stopPropagation();
-        }}
-      >
-        <AiOutlineClose color="#5236cc" />
-      </button> */}
-      <div
-        className={classNames(
-          'flex place-content-center p-[2px] mx-[16px] shadow-sm rounded-lg',
-          magClass
-        )}
-      >
-        <p
-          style={{
-            fontSize: '22px',
-            fontWeight: 'bold',
-            color: 'white',
+    <div className="relative bg-white rounded-lg shadow-lg py-4 px-6 text-color-purple-heart-950">
+      <div className="flex gap-4 justify-between">
+        <div
+          className={classNames(
+            'px-2 py-1 w-min shadow-sm rounded-lg',
+            magClass
+          )}
+        >
+          <p className="text-white w-min font-semibold">
+            {parseFloat(mag).toFixed(1)}
+          </p>
+        </div>
+        <button
+          onClick={(e) => {
+            onZoom(coords);
+            e.stopPropagation();
           }}
         >
-          {parseFloat(mag).toFixed(1)}
-        </p>
+          {/** black 600 */}
+          <FaPaperPlane color="#263782" />
+        </button>
       </div>
 
-      {/** divider */}
-      <div className="text-md p-2">
-        <p className="text-lg font-medium">{name}</p>
-        <p>{new Date(time).toLocaleString()}</p>
+      {/** Starts the stuff under the magnitude and fly to */}
+      <div className="flex flex-col pt-2">
+        <p className="text-lg font-semibold">{name}</p>
 
-        <Link href={url} target="_blank">
-          Details
-        </Link>
+        <p className="text-lg">{new Date(time).toLocaleString()}</p>
+        <div className="flex pt-2 justify-between">
+          <Link
+            href={url}
+            className="text-lg font-semibold underline"
+            target="_blank"
+          >
+            Details
+          </Link>
+          <button
+            onClick={(e) => {
+              removeQuake();
+              e.stopPropagation();
+            }}
+          >
+            {/** royal blue 900 - same as text */}
+            <FaTrashCan size="18px" color="#263782" />
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -96,25 +106,23 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
 const QuakeCards = () => {
   const earthquakes = useAtomValue(selectedEarthquakesAtom);
 
-  // return a map tool icon when null, or closed
-  if (!earthquakes.length) return null;
+  //TODO: return a map tool icon when null, or closed
+  if (!earthquakes.length) null;
   return (
-    <div className="absolute top-[100px] right-[20px] bg-gray-500/50 z-1000 p-3 rounded-lg w-[250px] overflow-y-auto max-h-[80vh] shadow-lg">
-      <div className="flex flex-col gap-2 rounded-lg">
-        {earthquakes.map((quake: any) => {
-          return (
-            <QuakeCard
-              key={quake.properties.code}
-              code={quake.properties.code}
-              place={quake.properties.place}
-              time={quake.properties.time}
-              mag={quake.properties.mag}
-              url={quake.properties.url}
-              coords={quake.geometry.coordinates}
-            />
-          );
-        })}
-      </div>
+    <div className="flex flex-col gap-4 max-h-[55vh] overflow-scroll mb-1">
+      {earthquakes.map((quake: any) => {
+        return (
+          <QuakeCard
+            key={quake.properties.code}
+            code={quake.properties.code}
+            place={quake.properties.place}
+            time={quake.properties.time}
+            mag={quake.properties.mag}
+            url={quake.properties.url}
+            coords={quake.geometry.coordinates}
+          />
+        );
+      })}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import Map from './components/Map';
-import QuakeCards from './components/QuakeCard';
+import ToolPanel from './components/ToolPanel';
 import { fetchEarthquakes } from '@/utils/fetchEarthquakes';
 
 export default async function Home() {
@@ -8,7 +8,7 @@ export default async function Home() {
   return (
     <div className="relative">
       <Map earthquakes={earthquakes} />
-      <QuakeCards />
+      <ToolPanel />
     </div>
   );
 }
