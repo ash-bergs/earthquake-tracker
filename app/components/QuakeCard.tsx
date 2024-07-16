@@ -51,28 +51,15 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
   };
 
   return (
-    <div className="relative bg-orange-50 rounded-lg shadow-lg py-4 px-6 text-color-purple-heart-950">
-      <div
-        style={{
-          display: 'flex',
-          gap: '16px',
-          justifyContent: 'space-between',
-        }}
-      >
+    <div className="relative bg-white rounded-lg shadow-lg py-4 px-6 text-color-purple-heart-950">
+      <div className="flex gap-4 justify-between">
         <div
           className={classNames(
             'px-2 py-1 w-min shadow-sm rounded-lg',
             magClass
           )}
         >
-          <p
-            style={{
-              fontSize: '20px',
-              fontWeight: '600',
-              color: 'white',
-              width: 'min-content',
-            }}
-          >
+          <p className="text-white w-min font-semibold">
             {parseFloat(mag).toFixed(1)}
           </p>
         </div>
@@ -83,19 +70,21 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
           }}
         >
           {/** black 600 */}
-          <FaPaperPlane color="#474a73" />
+          <FaPaperPlane color="#263782" />
         </button>
       </div>
 
       {/** Starts the stuff under the magnitude and fly to */}
       <div className="flex flex-col pt-2">
-        <p className="text-xl " style={{ fontWeight: '500' }}>
-          {name}
-        </p>
+        <p className="text-lg font-semibold">{name}</p>
 
         <p className="text-lg">{new Date(time).toLocaleString()}</p>
-        <div className="flex pt-2" style={{ justifyContent: 'space-between' }}>
-          <Link href={url} className="text-lg" target="_blank">
+        <div className="flex pt-2 justify-between">
+          <Link
+            href={url}
+            className="text-lg font-semibold underline"
+            target="_blank"
+          >
             Details
           </Link>
           <button
@@ -104,8 +93,8 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
               e.stopPropagation();
             }}
           >
-            {/** black 600 */}
-            <FaTrashCan size="16px" color="#474a73" />
+            {/** royal blue 900 - same as text */}
+            <FaTrashCan size="18px" color="#263782" />
           </button>
         </div>
       </div>
@@ -117,10 +106,10 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
 const QuakeCards = () => {
   const earthquakes = useAtomValue(selectedEarthquakesAtom);
 
-  // return a map tool icon when null, or closed
+  //TODO: return a map tool icon when null, or closed
   if (!earthquakes.length) null;
   return (
-    <div className="flex flex-col gap-4 rounded-lg">
+    <div className="flex flex-col gap-4 max-h-[55vh] overflow-scroll mb-1">
       {earthquakes.map((quake: any) => {
         return (
           <QuakeCard
