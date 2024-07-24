@@ -4,6 +4,7 @@ import { Earthquakes } from '@/types';
 import StandardQuakeCard from '../StandardQuakeCard';
 import { FaEarthAsia } from 'react-icons/fa6';
 import { currentDateStringAtom, currentWeekRangeStringAtom } from '@/store';
+import CircularScale from './CircularScale';
 
 type StatsSectionProps = {
   totalCount: number;
@@ -22,6 +23,7 @@ const StatsSection = ({
   const headerText = isWeekly ? 'This week' : 'Today'; // will need to use the date to determine if this is TODAY or THIS WEEK
   const calendarText = isWeekly ? 'Week' : 'Today';
   const calendarDate = isWeekly ? weekRange : currentDate;
+  const maxValue = isWeekly ? 5000 : 600;
 
   return (
     <div className="flex flex-col gap-20 text-white px-20 py-10">
@@ -46,7 +48,7 @@ const StatsSection = ({
             <p className="absolute text-sm font-medium text-gray-500 top-3 left-4">
               Total Earthquakes
             </p>
-            <div className="bg-blue-500 w-[100%] h-[200px]" />
+            <CircularScale value={totalCount} maxValue={maxValue} />
             <div className="flex items-center gap-2">
               <FaEarthAsia size="60px" />
               <p className="text-5xl font-medium">{totalCount}</p>
