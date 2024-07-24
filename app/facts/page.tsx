@@ -1,20 +1,23 @@
 import {
   fetchAndProcessEarthquakes,
   fetchLastWeekTopMagnitudeEarthquakes,
+  fetchAllLastWeekEarthquakes,
 } from '@/utils/fetchEarthquakes';
 import FactsPageContent from '../components/FactsPageContent';
 
 export default async function FactsPage() {
-  const processedEarthQuakesData = await fetchAndProcessEarthquakes();
-  const weeklyTopMagnitudeEvents = await fetchLastWeekTopMagnitudeEarthquakes();
+  const processedDailyEarthquakeData = await fetchAndProcessEarthquakes();
+  const weeklyHighMagnitudeEvents =
+    await fetchLastWeekTopMagnitudeEarthquakes();
+  const allLastWeekEventCount = await fetchAllLastWeekEarthquakes();
 
   return (
     <div className="relative">
       <FactsPageContent
-        weeklyTopMagnitudeEvents={weeklyTopMagnitudeEvents}
-        earthquakes={processedEarthQuakesData.earthquakes}
-        totalCount={processedEarthQuakesData.totalCount}
-        topMagnitudeEvents={processedEarthQuakesData.topMagnitudeEvents}
+        weeklyTopMagnitudeEvents={weeklyHighMagnitudeEvents}
+        weeklyTotalCount={allLastWeekEventCount}
+        totalCount={processedDailyEarthquakeData.dailyTotalEvents}
+        topMagnitudeEvents={processedDailyEarthquakeData.topMagnitudeEvents}
       />
     </div>
   );

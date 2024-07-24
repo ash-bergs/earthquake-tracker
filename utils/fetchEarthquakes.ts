@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { Earthquakes, EarthquakeFeature } from '@/types';
 
+//TODO: Why are we using axios? I could probably swap this for fetch and get some benefits from next
+
 /** Fetch all the earthquake events from today so far */
 export const fetchEarthquakes = async (): Promise<Earthquakes> => {
   const res = await axios.get(
@@ -17,19 +19,30 @@ export const fetchLastWeekTopMagnitudeEarthquakes =
       'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson'
     );
 
-    const earthquakes = res.data.features;
+    const earthquakesAbove4 = res.data.features;
     // sort and return 4, like the other function
-    const weeklyTopMagnitudeEvents = earthquakes
+    const weeklyTopMagnitudeEvents = earthquakesAbove4
       // sort array based on magnitude, in descending order
       .sort(
         (a: EarthquakeFeature, b: EarthquakeFeature) =>
           b.properties?.mag - a.properties?.mag
       )
       // take the top 5
-      .slice(0, 4);
+      .slice(0, 3);
 
     return weeklyTopMagnitudeEvents;
   };
+
+/** Get the count of the last week's events */
+export const fetchAllLastWeekEarthquakes = async (): Promise<number> => {
+  const res = await axios.get(
+    'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson'
+  );
+
+  const allEvents = res.data.features;
+
+  return allEvents.length;
+};
 
 // Right now we don't have this wired up to a database
 // that's okay, we'll just do some pre-processing for now
@@ -39,7 +52,7 @@ export const fetchLastWeekTopMagnitudeEarthquakes =
 type ProcessedEarthquakes = {
   earthquakes: Earthquakes;
   topMagnitudeEvents: Earthquakes;
-  totalCount: number;
+  dailyTotalEvents: number;
 };
 
 /** Fetch earthquakes and process:
@@ -56,8 +69,8 @@ export const fetchAndProcessEarthquakes =
           b.properties?.mag - a.properties?.mag
       )
       // take the top 5
-      .slice(0, 4);
-    const totalCount = earthquakes.length;
+      .slice(0, 3);
+    const dailyTotalEvents = earthquakes.length;
 
-    return { earthquakes, topMagnitudeEvents, totalCount };
+    return { earthquakes, topMagnitudeEvents, dailyTotalEvents };
   };

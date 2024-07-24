@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import classNames from 'classnames';
+import { FaExternalLinkSquareAlt } from 'react-icons/fa';
 
 type QuakeCardProps = {
   place: string;
@@ -24,31 +25,35 @@ const StandardQuakeCard = ({ place, mag, time, url }: QuakeCardProps) => {
 
   return (
     <div className="relative bg-black-100 rounded-lg shadow-lg p-3 text-color-purple-heart-950 w-[200px] transform transition-transform duration-300 hover:scale-105">
-      <div
-        className={classNames(
-          'flex place-content-center p-[2px] mx-[16px] shadow-sm rounded-lg',
-          magClass
-        )}
-      >
-        <p
-          style={{
-            fontSize: '22px',
-            fontWeight: 'bold',
-            color: 'white',
-          }}
+      <div className="flex justify-between text-black-600 items-center">
+        <div
+          className={classNames(
+            'px-2 py-1 w-min shadow-sm rounded-lg',
+            magClass
+          )}
         >
-          {parseFloat(mag).toFixed(1)}
-        </p>
+          <p
+            style={{
+              fontSize: '20px',
+              fontWeight: 'bold',
+              color: 'white',
+            }}
+          >
+            {parseFloat(mag).toFixed(1)}
+          </p>
+        </div>
+        <div className="flex items-center gap-1">
+          <Link className="text-sm underline " href={url} target="_blank">
+            Learn More
+          </Link>
+          <FaExternalLinkSquareAlt size="10px" />
+        </div>
       </div>
 
       {/** divider */}
-      <div className="flex flex-col gap-1 pt-2 text-purple-heart-950">
-        <p>{name}</p>
-        <p>{new Date(time).toLocaleString()}</p>
-
-        <Link className="underline " href={url} target="_blank">
-          Details
-        </Link>
+      <div className="flex flex-col gap-1 pt-2 text-black-600">
+        <p className="text-lg font-semibold">{name}</p>
+        <p className="text-sm">{new Date(time).toLocaleString()}</p>
       </div>
     </div>
   );
