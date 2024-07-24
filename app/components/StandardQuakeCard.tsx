@@ -32,15 +32,7 @@ const StandardQuakeCard = ({ place, mag, time, url }: QuakeCardProps) => {
             magClass
           )}
         >
-          <p
-            style={{
-              fontSize: '20px',
-              fontWeight: 'bold',
-              color: 'white',
-            }}
-          >
-            {parseFloat(mag).toFixed(1)}
-          </p>
+          <p className="font-bold text-white">{parseFloat(mag).toFixed(1)}</p>
         </div>
         <div className="flex items-center gap-1">
           <Link className="text-sm underline " href={url} target="_blank">
@@ -52,7 +44,7 @@ const StandardQuakeCard = ({ place, mag, time, url }: QuakeCardProps) => {
 
       {/** divider */}
       <div className="flex flex-col gap-1 pt-2 text-black-600">
-        <p className="text-lg font-semibold">{name}</p>
+        <p className=" font-semibold">{name}</p>
         <p className="text-sm">{new Date(time).toLocaleString()}</p>
       </div>
     </div>
