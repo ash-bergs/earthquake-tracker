@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const HalfCircularScale = ({
   value,
@@ -9,10 +9,12 @@ const HalfCircularScale = ({
 }) => {
   const radius = 50;
   const circumference = Math.PI * radius;
-  // amount of half circle to be filled based on passed values
   const percentage = value / maxValue;
-  // stroke offset to determine the length of the colored arc
-  const strokeDashoffset = circumference * (1 - percentage);
+  const [strokeDashoffset, setStrokeDashoffset] = useState(circumference);
+
+  useEffect(() => {
+    setStrokeDashoffset(circumference * (1 - percentage));
+  }, [value, maxValue, percentage, circumference]);
 
   return (
     <svg className="w-auto h-auto transform" viewBox="0 0 100 50">
@@ -33,6 +35,7 @@ const HalfCircularScale = ({
         fill="none"
         stroke="#d1d5db"
         strokeWidth="10"
+        strokeLinecap="round"
       />
       <path
         d="
@@ -45,6 +48,7 @@ const HalfCircularScale = ({
         strokeDasharray={circumference}
         strokeDashoffset={strokeDashoffset}
         strokeLinecap="round"
+        style={{ transition: 'stroke-dashoffset 1s ease-out' }} // Add transition for smooth animation
       />
     </svg>
   );
