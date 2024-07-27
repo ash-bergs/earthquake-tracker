@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Earthquakes, EarthquakeFeature } from '@/types';
 
 //TODO: Why are we using axios? I could probably swap this for fetch and get some benefits from next
+//TODO: Cleanup - lots of functions here doing super similar things - we can streamline them, and integrate them with atoms where appropriate
 
 /** Fetch all the earthquake events from today so far */
 export const fetchEarthquakes = async (): Promise<Earthquakes> => {
@@ -10,6 +11,43 @@ export const fetchEarthquakes = async (): Promise<Earthquakes> => {
   );
 
   return res.data.features;
+};
+
+/** Fetch significant earthquakes () */
+// This is only returning one for today?? Maybe need to format differently
+export const fetchSignificantEarthquakes = async (): Promise<Earthquakes> => {
+  const res = await axios.get(
+    'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_day.geojson'
+  );
+
+  return res.data.features;
+};
+
+export const fetchTodaySignificantEvents = async (): Promise<
+  number | undefined
+> => {
+  const today = new Date();
+
+  const startDate = today.toISOString().split('T')[0]; // Gets current date in YYYY-MM-DD format
+
+  // Get next day's date
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  const endDate = tomorrow.toISOString().split('T')[0]; // Gets next date in YYYY-MM-DD format
+
+  const res = await axios.get(
+    'https://earthquake.usgs.gov/fdsnws/event/1/query',
+    {
+      params: {
+        format: 'geojson',
+        starttime: startDate,
+        endtime: endDate,
+        minmagnitude: 2.5,
+      },
+    }
+  );
+
+  return res.data.features.length;
 };
 
 /** Fetch all the highest magnitude earthquakes from the last week */
@@ -34,9 +72,20 @@ export const fetchLastWeekTopMagnitudeEarthquakes =
   };
 
 /** Get the count of the last week's events */
+// over 2.5 magnitude
 export const fetchAllLastWeekEarthquakes = async (): Promise<number> => {
   const res = await axios.get(
-    'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson'
+    'https://earthquake.usgs.gov/fdsnws/event/1/query',
+    {
+      params: {
+        format: 'geojson',
+        starttime: new Date(
+          new Date().setDate(new Date().getDate() - 7)
+        ).toISOString(),
+        endtime: new Date().toISOString(),
+        minmagnitude: 2.5,
+      },
+    }
   );
 
   const allEvents = res.data.features;
@@ -74,3 +123,39 @@ export const fetchAndProcessEarthquakes =
 
     return { earthquakes, topMagnitudeEvents, dailyTotalEvents };
   };
+
+/** Fetch today's significant events with timestamps */
+export interface EarthquakeEvent {
+  time: number; // Timestamp of the earthquake
+  magnitude: number;
+}
+
+export const fetchTodaySignificantEventsWithTimes = async (): Promise<
+  EarthquakeEvent[] | undefined
+> => {
+  const today = new Date();
+
+  const startDate = today.toISOString().split('T')[0];
+
+  // Get next day's date
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  const endDate = tomorrow.toISOString().split('T')[0];
+
+  const res = await axios.get(
+    'https://earthquake.usgs.gov/fdsnws/event/1/query',
+    {
+      params: {
+        format: 'geojson',
+        starttime: startDate,
+        endtime: endDate,
+        minmagnitude: 2.5,
+      },
+    }
+  );
+
+  return res.data.features.map((feature: any) => ({
+    time: feature.properties.time,
+    magnitude: feature.properties.mag,
+  }));
+};

@@ -1,5 +1,5 @@
 'use client';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { selectedEarthquakesAtom } from '@/store';
 
 const EarthquakeActions = () => {
