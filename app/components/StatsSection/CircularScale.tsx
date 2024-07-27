@@ -50,6 +50,14 @@ const HalfCircularScale = ({
         strokeLinecap="round"
         style={{ transition: 'stroke-dashoffset 1s ease-out' }} // Add transition for smooth animation
       />
+      <text x="10" y="48" fill="white" fontSize="5" textAnchor="middle">
+        0
+      </text>{' '}
+      {/* Start number */}
+      <text x="90" y="48" fill="white" fontSize="5" textAnchor="middle">
+        {maxValue}
+      </text>{' '}
+      {/* End number */}
     </svg>
   );
 };

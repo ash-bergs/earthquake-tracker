@@ -11,14 +11,18 @@
   "dependencies": {
     "@types/geojson": "^7946.0.14",
     "axios": "^1.7.2",
+    "chart.js": "^4.4.3",
     "classnames": "^2.5.1",
     "jotai": "^2.8.4",
     "mapbox-gl": "^3.5.1",
+    "moment-timezone": "^0.5.45",
     "next": "14.2.4",
     "react": "^18",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
-    "react-map-gl": "^7.1.7"
+    "react-map-gl": "^7.1.7",
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
     "@types/node": "^20",

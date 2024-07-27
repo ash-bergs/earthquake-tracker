@@ -1,5 +1,5 @@
 import { Earthquakes } from '@/types';
-import StatsSection from './FactPageContent/StatsSection';
+import StatsSection from './StatsSection/StatsSection';
 
 type FactsPageContent = {
   topMagnitudeEvents: Earthquakes;
@@ -8,7 +8,6 @@ type FactsPageContent = {
   weeklyTopMagnitudeEvents: Earthquakes;
 };
 
-//TODO: break this up into components
 const FactsPageContent = ({
   topMagnitudeEvents,
   totalCount,
