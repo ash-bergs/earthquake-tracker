@@ -4,7 +4,6 @@ import { dailyActiveLocationsAtom } from '@/store';
 
 const MostActiveLocations = () => {
   const locations = useAtomValue(dailyActiveLocationsAtom);
-  console.log(locations);
 
   if (!locations) return null;
 

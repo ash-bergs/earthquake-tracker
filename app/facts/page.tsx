@@ -1,22 +1,9 @@
-import {
-  fetchLastWeekTopMagnitudeEarthquakes,
-  fetchAllLastWeekEarthquakes,
-  fetchDailyStats,
-  fetchWeeklyStats,
-} from '@/utils/fetchEarthquakes';
+import { fetchDailyStats, fetchWeeklyStats } from '@/utils/fetchEarthquakes';
 import FactsPageContent from '../components/FactsPageContent';
 
 export default async function FactsPage() {
-  //const dailySignificantEvents = await fetchTodaySignificantEvents();
-  //const processedDailyEarthquakeData = await fetchAndProcessEarthquakes();
-  const weeklyHighMagnitudeEvents =
-    await fetchLastWeekTopMagnitudeEarthquakes();
-  const allLastWeekEventCount = await fetchAllLastWeekEarthquakes();
-  //const dailyEventsWithTimes = await fetchTodaySignificantEventsWithTimes();
   const dailyEventsData = await fetchDailyStats();
-
-  // const test = await fetchWeeklyStats();
-  // console.log(test);
+  const weeklyEventsData = await fetchWeeklyStats();
 
   const {
     dailyEvents,
@@ -24,6 +11,13 @@ export default async function FactsPage() {
     dailyEventsWithTimes,
     topMagnitudeDailyEvents,
   } = dailyEventsData;
+
+  const {
+    //weeklyEvents,
+    weeklyEventsTotal,
+    topMagnitudeWeeklyEvents,
+    //eventsByWeekday,
+  } = weeklyEventsData;
 
   return (
     <div className="relative">
@@ -33,8 +27,8 @@ export default async function FactsPage() {
         topMagnitudeEvents={topMagnitudeDailyEvents}
         totalCount={dailyEventsTotal}
         // weedkly
-        weeklyTopMagnitudeEvents={weeklyHighMagnitudeEvents}
-        weeklyTotalCount={allLastWeekEventCount}
+        weeklyTopMagnitudeEvents={topMagnitudeWeeklyEvents}
+        weeklyTotalCount={weeklyEventsTotal}
       />
     </div>
   );
