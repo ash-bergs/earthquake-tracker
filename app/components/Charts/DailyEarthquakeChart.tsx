@@ -1,4 +1,3 @@
-import { EarthquakeEvent } from '@/utils/fetchEarthquakes';
 import { ResponsiveBar } from '@nivo/bar';
 import { useAtomValue } from 'jotai';
 import { processedDailyEventsWithTimesAtom } from '@/store';
@@ -80,17 +79,3 @@ const DailyEarthquakeChart: React.FC = () => {
 };
 
 export default DailyEarthquakeChart;
-
-export const processEarthquakeData = (
-  events: EarthquakeEvent[]
-): { hour: number; count: number }[] => {
-  const hourlyCounts = Array(24).fill(0);
-
-  events.forEach((event) => {
-    const date = new Date(event.time);
-    const hour = date.getUTCHours(); // Ensure using UTC hour
-    hourlyCounts[hour]++;
-  });
-
-  return hourlyCounts.map((count, hour) => ({ hour, count }));
-};

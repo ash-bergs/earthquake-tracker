@@ -42,6 +42,7 @@ const StatsSection = ({
         </div>
 
         {/** Events Graph and Most Active area */}
+        {/**TODO: make nivo graph responsive without hard-coded height */}
         <div className="flex flex-col gap-4">
           <div className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow-inner sm:w-[100%] md:w-[325px] lg:w-[400px] xl:w-[100%]">
             <p className="text-md font-medium text-gray-500">
