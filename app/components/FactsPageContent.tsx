@@ -6,8 +6,8 @@ import useSyncAtom from '@/store/useSyncAtom';
 import { allDailyEventsAtom, dailyEventsWithTimesAtom } from '@/store';
 
 type FactsPageContent = {
-  allDailyEvents: any; // this is ALL the earthquakes for the day, regardless of magnitude
-  dailyEventsWithTimes: any; // those of significant magnitude with times they occured
+  allDailyEvents: any;
+  dailyEventsWithTimes: any;
   topMagnitudeEvents: Earthquakes;
   totalCount: number;
   weeklyTotalCount: number;
