@@ -1,39 +1,10 @@
-import { Earthquakes } from '@/types';
-import { useEffect, useState } from 'react';
 import { FaEarthAsia } from 'react-icons/fa6';
-import { fetchEarthquakes } from '@/utils/fetchEarthquakes';
-
-//TODO: a lot here can be captured and managed in atoms
-//TODO: currently only getting the active locations based off of today
-const getMostActiveLocations = (earthquakes: Earthquakes) => {
-  const regions: { [key: string]: number } = {};
-
-  earthquakes.forEach((event) => {
-    const region = event.properties?.place.split(', ').pop();
-
-    if (regions[region]) {
-      regions[region]++;
-    } else {
-      regions[region] = 1;
-    }
-  });
-
-  const sortedRegions = Object.entries(regions).sort((a, b) => b[1] - a[1]);
-  return sortedRegions.slice(0, 3).map((region) => region[0]);
-};
+import { useAtomValue } from 'jotai';
+import { dailyActiveLocationsAtom } from '@/store';
 
 const MostActiveLocations = () => {
-  const [locations, setLocations] = useState<string[] | undefined>(undefined);
-
-  useEffect(() => {
-    const getData = async () => {
-      const earthquakes = await fetchEarthquakes();
-      const activeLocations = getMostActiveLocations(earthquakes);
-      setLocations(activeLocations);
-    };
-
-    getData();
-  }, []);
+  const locations = useAtomValue(dailyActiveLocationsAtom);
+  console.log(locations);
 
   if (!locations) return null;
 

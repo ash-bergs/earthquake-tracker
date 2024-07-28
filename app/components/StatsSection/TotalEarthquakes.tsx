@@ -1,7 +1,7 @@
 'use client';
 
 import { FaEarthAsia } from 'react-icons/fa6';
-import CircularScale from './CircularScale';
+import CircularScale from '../Charts/CircularScale';
 import Link from 'next/link';
 import ToolTip from '../ToolTip/ToolTip';
 
