@@ -4,7 +4,7 @@ import { Earthquakes, EarthquakeFeature } from '@/types';
 //TODO: Why are we using axios? I could probably swap this for fetch and get some benefits from next
 //TODO: Cleanup - lots of functions here doing super similar things - we can streamline them, and integrate them with atoms where appropriate
 
-/** Fetch all the earthquake events from today so far */
+/** Fetch all the earthquake event geojson from today so far - all magnitudes */
 export const fetchEarthquakes = async (): Promise<Earthquakes> => {
   const res = await axios.get(
     'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson'
@@ -21,33 +21,6 @@ export const fetchSignificantEarthquakes = async (): Promise<Earthquakes> => {
   );
 
   return res.data.features;
-};
-
-export const fetchTodaySignificantEvents = async (): Promise<
-  number | undefined
-> => {
-  const today = new Date();
-
-  const startDate = today.toISOString().split('T')[0]; // Gets current date in YYYY-MM-DD format
-
-  // Get next day's date
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
-  const endDate = tomorrow.toISOString().split('T')[0]; // Gets next date in YYYY-MM-DD format
-
-  const res = await axios.get(
-    'https://earthquake.usgs.gov/fdsnws/event/1/query',
-    {
-      params: {
-        format: 'geojson',
-        starttime: startDate,
-        endtime: endDate,
-        minmagnitude: 2.5,
-      },
-    }
-  );
-
-  return res.data.features.length;
 };
 
 /** Fetch all the highest magnitude earthquakes from the last week */
@@ -98,31 +71,6 @@ export const fetchAllLastWeekEarthquakes = async (): Promise<number> => {
 // while this won't be the most efficient, it'll work for now
 // in the future we can look into adding a database
 // we'd then get some interesting tools to work with the geojson data
-type ProcessedEarthquakes = {
-  earthquakes: Earthquakes;
-  topMagnitudeEvents: Earthquakes;
-  dailyTotalEvents: number;
-};
-
-/** Fetch earthquakes and process:
- * Get 4 highest magnitude events
- * Return total count of events
- */
-export const fetchAndProcessEarthquakes =
-  async (): Promise<ProcessedEarthquakes> => {
-    const earthquakes = await fetchEarthquakes();
-    const topMagnitudeEvents = earthquakes
-      // sort array based on magnitude, in descending order
-      .sort(
-        (a: EarthquakeFeature, b: EarthquakeFeature) =>
-          b.properties?.mag - a.properties?.mag
-      )
-      // take the top 5
-      .slice(0, 3);
-    const dailyTotalEvents = earthquakes.length;
-
-    return { earthquakes, topMagnitudeEvents, dailyTotalEvents };
-  };
 
 /** Fetch today's significant events with timestamps */
 export interface EarthquakeEvent {
@@ -130,14 +78,11 @@ export interface EarthquakeEvent {
   magnitude: number;
 }
 
-export const fetchTodaySignificantEventsWithTimes = async (): Promise<
-  EarthquakeEvent[] | undefined
-> => {
+// Attempt at single function to handle all day needs
+export const fetchDailyStats = async (): Promise<any> => {
+  // fetch the earth quakes for the day
   const today = new Date();
-
   const startDate = today.toISOString().split('T')[0];
-
-  // Get next day's date
   const tomorrow = new Date(today);
   tomorrow.setDate(today.getDate() + 1);
   const endDate = tomorrow.toISOString().split('T')[0];
@@ -154,8 +99,95 @@ export const fetchTodaySignificantEventsWithTimes = async (): Promise<
     }
   );
 
-  return res.data.features.map((feature: any) => ({
-    time: feature.properties.time,
-    magnitude: feature.properties.mag,
-  }));
+  const dailyEvents = res.data.features;
+
+  //? Is this too much to do here? Should atoms handle it?
+  // or is passing them data prepared straight up on the server a good move?
+
+  // get the total number of significant magnitude events
+  const dailyEventsTotal = dailyEvents.length;
+  // sort by time and magnitude - for chart
+  const dailyEventsWithTimes = dailyEvents.map(
+    (feature: EarthquakeFeature) => ({
+      time: feature.properties?.time,
+      magnitude: feature.properties?.mag,
+    })
+  );
+  // get the top 3 magnitude events
+  const topMagnitudeDailyEvents = dailyEvents
+    .sort(
+      (a: EarthquakeFeature, b: EarthquakeFeature) =>
+        b.properties?.mag - a.properties?.mag
+    )
+    .slice(0, 3);
+
+  return {
+    dailyEvents,
+    dailyEventsTotal,
+    dailyEventsWithTimes,
+    topMagnitudeDailyEvents,
+  };
+};
+
+/** Fetch this week's significant events */
+const getWeekDateRange = () => {
+  const today = new Date();
+  const startDate = new Date(today.setDate(today.getDate() - today.getDay()));
+  const endDate = new Date(today.setDate(today.getDate() - today.getDay() + 6));
+
+  return {
+    startDate: startDate.toISOString().split('T')[0],
+    endDate: endDate.toISOString().split('T')[0],
+  };
+};
+
+const getDayFromTimestamp = (timestamp: number) => {
+  const date = new Date(timestamp);
+  return date.getDay(); // will return 0 (Sunday) - 6 (Saturday)
+};
+
+export const fetchWeeklyStats = async (): Promise<any> => {
+  const { startDate, endDate } = getWeekDateRange();
+
+  // fetch the earthquake day of significant magnitude for the week
+  const res = await axios.get(
+    'https://earthquake.usgs.gov/fdsnws/event/1/query',
+    {
+      params: {
+        format: 'geojson',
+        starttime: startDate,
+        endtime: endDate,
+        minmagnitude: 2.5,
+      },
+    }
+  );
+
+  const weeklyEvents = res.data.features;
+
+  // total number of events
+  const weeklyEventsTotal = weeklyEvents.length;
+
+  const eventsByWeekday: EarthquakeFeature[][] = Array.from(
+    { length: 7 },
+    () => []
+  );
+  weeklyEvents.forEach((feature: EarthquakeFeature) => {
+    const weekday = getDayFromTimestamp(feature.properties?.time);
+    eventsByWeekday[weekday].push(feature);
+  });
+
+  // get the top three magnitude events
+  const topMagnitudeWeeklyEvents = weeklyEvents
+    .sort(
+      (a: EarthquakeFeature, b: EarthquakeFeature) =>
+        b.properties?.mag - a.properties?.mag
+    )
+    .slice(0, 3);
+
+  return {
+    weeklyEvents,
+    weeklyEventsTotal,
+    topMagnitudeWeeklyEvents,
+    eventsByWeekday,
+  };
 };
