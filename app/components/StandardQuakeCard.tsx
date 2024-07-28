@@ -1,4 +1,5 @@
 'use client';
+
 import Link from 'next/link';
 import classNames from 'classnames';
 import { FaExternalLinkSquareAlt } from 'react-icons/fa';

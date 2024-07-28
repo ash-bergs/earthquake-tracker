@@ -1,4 +1,3 @@
-'use client';
 import { useAtomValue } from 'jotai';
 import { Earthquakes } from '@/types';
 import { currentDateStringAtom, currentWeekRangeStringAtom } from '@/store';
@@ -6,7 +5,7 @@ import BreakdownCalendar from './BreakdownCalendar';
 import MostActiveLocations from './MostActiveLocations';
 import StandardQuakeCard from '../StandardQuakeCard';
 import TotalEarthquakes from './TotalEarthquakes';
-import EarthquakeChart from '../EarthquakeChart/EarthquakeChart';
+import DailyEarthquakeChart from '../Charts/DailyEarthquakeChart';
 
 type StatsSectionProps = {
   totalCount: number;
@@ -43,20 +42,20 @@ const StatsSection = ({
         </div>
 
         {/** Events Graph and Most Active area */}
+        {/**TODO: make nivo graph responsive without hard-coded height */}
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow-inner gap-4">
+          <div className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow-inner sm:w-[100%] md:w-[325px] lg:w-[400px] xl:w-[100%]">
             <p className="text-md font-medium text-gray-500">
               Events Throughout {isWeekly ? 'Week' : 'Day'}
             </p>
-            <EarthquakeChart />
-            {/* <div className="bg-blue-500 w-[100%] h-[300px]" /> */}
+            <div style={{ width: '100%', height: '325px' }}>
+              <DailyEarthquakeChart />
+            </div>
           </div>
-          {/** Most active locations */}
-
           <MostActiveLocations />
         </div>
 
-        {/** Top 5 of the Day */}
+        {/** Top 3 of the Day */}
         <div className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow-inner">
           <h2 className="text-md font-medium text-gray-500">Notable Events</h2>
           <div className="flex flex-col justify-center flex-wrap gap-6 py-2">
@@ -74,8 +73,6 @@ const StatsSection = ({
           </div>
         </div>
       </div>
-
-      {/** THIS WEEK */}
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { Feature, Point } from 'geojson';
 import { MapRef } from 'react-map-gl';
+import { EarthquakeEvent } from '@/utils/fetchEarthquakes';
+import { Earthquakes } from '@/types';
 
 export const earthquakesAtom = atom<Feature<Point>[]>([]);
 
@@ -39,3 +41,58 @@ export const currentWeekRangeStringAtom = atom((get) => {
 
   return `${startOfRange.toDateString()} - ${currentDate.toDateString()}`;
 });
+
+// NEW ATOMS
+export const dailyEventsWithTimesAtom = atom<EarthquakeEvent[] | undefined>(
+  undefined
+);
+
+export const allDailyEventsAtom = atom<Earthquakes | undefined>(undefined);
+
+export const processedDailyEventsWithTimesAtom = atom<
+  { hour: number; count: number }[] | undefined
+>((get) => {
+  const dailyEvents = get(dailyEventsWithTimesAtom);
+
+  if (!dailyEvents) return undefined;
+
+  return processEarthquakeData(dailyEvents);
+});
+
+const processEarthquakeData = (
+  events: EarthquakeEvent[]
+): { hour: number; count: number }[] => {
+  const hourlyCounts = Array(24).fill(0);
+
+  events.forEach((event) => {
+    const date = new Date(event.time);
+    const hour = date.getUTCHours(); // using UTC hour - we can handle converting later
+    hourlyCounts[hour]++;
+  });
+
+  return hourlyCounts.map((count, hour) => ({ hour, count }));
+};
+
+export const dailyActiveLocationsAtom = atom((get) => {
+  const dailyEvents = get(allDailyEventsAtom);
+  if (!dailyEvents) return undefined;
+  return getMostActiveLocations(dailyEvents);
+});
+
+// most active locations
+const getMostActiveLocations = (earthquakes: Earthquakes) => {
+  const regions: { [key: string]: number } = {};
+
+  earthquakes.forEach((event) => {
+    const region = event.properties?.place.split(', ').pop();
+
+    if (regions[region]) {
+      regions[region]++;
+    } else {
+      regions[region] = 1;
+    }
+  });
+
+  const sortedRegions = Object.entries(regions).sort((a, b) => b[1] - a[1]);
+  return sortedRegions.slice(0, 3).map((region) => region[0]);
+};

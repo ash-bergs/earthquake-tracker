@@ -1,4 +1,5 @@
 'use client';
+
 import Link from 'next/link';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { selectedEarthquakesAtom, useMap } from '@/store';
