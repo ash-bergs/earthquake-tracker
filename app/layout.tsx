@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Provider } from 'jotai';
 import NavHeader from './components/NavHeader';
+import { Analytics } from '@vercel/analytics/react';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Provider>
+          <Analytics />
           <NavHeader />
           {children}
         </Provider>
