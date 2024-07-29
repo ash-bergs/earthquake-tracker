@@ -18,15 +18,15 @@ const StandardQuakeCard = ({ place, mag, time, url }: QuakeCardProps) => {
 
   /** color the magnitude section of the card based on event severity */
   const magClass = classNames({
-    'bg-green-500': magnitude < 2,
-    'bg-yellow-500': magnitude >= 2 && magnitude < 4,
-    'bg-orange-400': magnitude >= 4 && magnitude < 6,
-    'bg-red-400': magnitude >= 6,
+    'bg-blue-700': magnitude < 2,
+    'bg-blue-800': magnitude >= 2 && magnitude < 4,
+    'bg-red-500': magnitude >= 4 && magnitude < 6,
+    'bg-red-600': magnitude >= 6,
   });
 
   return (
-    <div className="relative bg-black-100 rounded-lg shadow-lg p-3 text-color-purple-heart-950 w-[200px] transform transition-transform duration-300 hover:scale-105">
-      <div className="flex justify-between text-black-600 items-center">
+    <div className="relative bg-gray-100 border-rounded-lg border-gray-600 rounded-lg shadow-lg p-3 text-blue-800 w-[200px] transform transition-transform duration-300 hover:scale-105">
+      <div className="flex justify-between text-blue-800 items-center">
         <div
           className={classNames(
             'px-2 py-1 w-min shadow-sm rounded-lg',
@@ -36,7 +36,11 @@ const StandardQuakeCard = ({ place, mag, time, url }: QuakeCardProps) => {
           <p className="font-bold text-white">{parseFloat(mag).toFixed(1)}</p>
         </div>
         <div className="flex items-center gap-1">
-          <Link className="text-sm underline " href={url} target="_blank">
+          <Link
+            className="text-sm underline text-blue-900 "
+            href={url}
+            target="_blank"
+          >
             Learn More
           </Link>
           <FaExternalLinkSquareAlt size="10px" />
@@ -44,7 +48,7 @@ const StandardQuakeCard = ({ place, mag, time, url }: QuakeCardProps) => {
       </div>
 
       {/** divider */}
-      <div className="flex flex-col gap-1 pt-2 text-black-600">
+      <div className="flex flex-col gap-1 pt-2">
         <p className=" font-semibold">{name}</p>
         <p className="text-sm">{new Date(time).toLocaleString()}</p>
       </div>

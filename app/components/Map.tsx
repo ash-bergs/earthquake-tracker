@@ -99,7 +99,7 @@ const Map = ({ earthquakes }: MapProps) => {
           zoom: 2, // Zoomed out to show a large area
         }}
         style={{ width: '100%', height: '100%' }}
-        mapStyle="mapbox://styles/mapbox/outdoors-v12"
+        mapStyle="mapbox://styles/mapbox/navigation-day-v1"
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
         interactiveLayerIds={['earthquake-layer']}
         interactive={true}

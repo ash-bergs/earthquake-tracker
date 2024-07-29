@@ -6,19 +6,20 @@ const MostActiveLocations = () => {
   const locations = useAtomValue(dailyActiveLocationsAtom);
 
   if (!locations) return null;
+  const mostActiveLocation = locations[0];
 
   return (
-    <div className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow-inner gap-2">
-      <h2 className="text-md font-medium text-gray-500">
-        Most Active Locations
+    <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm gap-2 border-[0.75px] border-gray-100">
+      <h2 className="text-lg font-semibold text-blue-800">
+        Most Active Location
       </h2>
-      <ul className="text-gray-500 text-lg">
-        {locations.map((location) => (
-          <li key={location} className="flex items-center gap-4">
-            <FaEarthAsia size="20px" />
-            {location}
+      <ul className="flex text-blue-800 text-lg justify-evenly w-[100%]">
+        <div>
+          <li className="flex items-center border-2 border-red-500 bg-red-400 shadow-sm rounded-md text-lg text-white gap-4 p-2">
+            <FaEarthAsia size="30px" color="#fff" />
+            {mostActiveLocation}
           </li>
-        ))}
+        </div>
       </ul>
     </div>
   );

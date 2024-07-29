@@ -25,7 +25,7 @@ const FactsPageContent = ({
   useSyncAtom(dailyEventsWithTimesAtom, dailyEventsWithTimes);
   useSyncAtom(allDailyEventsAtom, allDailyEvents);
   return (
-    <main className="bg-royal-blue-900 h-[screen]">
+    <main className="h-[screen]">
       <StatsSection topEvents={topMagnitudeEvents} totalCount={totalCount} />
       <StatsSection
         isWeekly

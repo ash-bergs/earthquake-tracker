@@ -4,20 +4,23 @@
 
 html,
 body {
-  height: 100%;
+  min-height: 100%;
   margin: 0;
-  padding: 0;
-  background-color: #2b3b73;
+  background: rgb(0, 212, 219);
+  background: linear-gradient(
+    0deg,
+    rgba(0, 212, 219, 0.41082370448179273) 0%,
+    rgba(235, 255, 253, 1) 100%
+  );
 }
 
 #root,
 #__next {
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background-color: #2b3b73;
+  background-color: #cdfffd;
 }
 
 @layer utilities {
