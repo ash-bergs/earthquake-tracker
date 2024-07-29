@@ -1,9 +1,9 @@
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { Feature, Point } from 'geojson';
 import { MapRef } from 'react-map-gl';
-import { EarthquakeEvent } from '@/utils/fetchEarthquakes';
+import { EventTimeAndMagnitude } from '@/utils/fetchEarthquakes';
 import { Earthquakes } from '@/types';
-import { EarthquakeFeature } from '@/types';
+import { EarthquakeFeature, EventsDateAndCount } from '@/types';
 import {
   getStartOfRange,
   processEarthquakeDataByHour,
@@ -45,9 +45,9 @@ export const currentWeekRangeStringAtom = atom((get) => {
 });
 
 /* ------------------------------- DAILY ATOMS ------------------------------ */
-export const dailyEventsWithTimesAtom = atom<EarthquakeEvent[] | undefined>(
-  undefined
-);
+export const dailyEventsWithTimesAtom = atom<
+  EventTimeAndMagnitude[] | undefined
+>(undefined);
 
 export const allDailyEventsAtom = atom<Earthquakes | undefined>(undefined);
 
@@ -105,9 +105,7 @@ export const weeklyActiveLocationsAtom = atom((get) => {
   return getMostActiveLocations(weeklyEvents);
 });
 
-type EventsByWeekday = {
-  [key: string]: number;
-};
-
-export const eventsByWeekdayAtom = atom<EventsByWeekday | undefined>(undefined);
+export const EventsDateAndCountAtom = atom<EventsDateAndCount | undefined>(
+  undefined
+);
 /* ---------------------------- END WEEKLY ATOMS ---------------------------- */

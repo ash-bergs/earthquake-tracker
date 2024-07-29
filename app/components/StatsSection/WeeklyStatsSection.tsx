@@ -41,7 +41,7 @@ const WeeklyStatsSection = () => {
         <div className="flex flex-col gap-4">
           <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm sm:w-[100%] md:w-[325px] lg:w-[400px] xl:w-[100%] border-[0.75px] border-gray-100">
             <p className="text-lg font-semibold text-blue-800">
-              Events Throughout Day
+              Events Throughout Week
             </p>
             <div style={{ width: '100%', height: '325px' }}>
               <WeeklyEarthquakeChart />

@@ -14,7 +14,7 @@ export const fetchEarthquakes = async (): Promise<Earthquakes> => {
 };
 
 /** Fetch today's significant events with timestamps */
-export interface EarthquakeEvent {
+export interface EventTimeAndMagnitude {
   time: number; // Timestamp of the earthquake
   magnitude: number;
 }

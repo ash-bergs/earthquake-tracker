@@ -1,4 +1,4 @@
-import { EarthquakeEvent } from '@/utils/fetchEarthquakes';
+import { EventTimeAndMagnitude } from '@/utils/fetchEarthquakes';
 import { Earthquakes } from '@/types';
 // helper to calculate the start of the week to today
 export const getStartOfRange = (date: Date) => {
@@ -11,7 +11,7 @@ export const getStartOfRange = (date: Date) => {
 // we're processing this data twice, once on the request, and once here - seems a little confusing
 /** Helper to organize events by time of day - DAILY */
 export const processEarthquakeDataByHour = (
-  events: EarthquakeEvent[]
+  events: EventTimeAndMagnitude[]
 ): { hour: number; count: number }[] => {
   const hourlyCounts = Array(24).fill(0);
 

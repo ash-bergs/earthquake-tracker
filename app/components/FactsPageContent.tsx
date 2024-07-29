@@ -5,16 +5,18 @@ import {
   allDailyEventsAtom,
   dailyEventsWithTimesAtom,
   allWeeklyEventsAtom,
-  eventsByWeekdayAtom,
+  EventsDateAndCountAtom,
 } from '@/store';
 import { DailyStatsSection, WeeklyStatsSection } from './StatsSection';
+import { Earthquakes, EventsDateAndCount } from '@/types';
+import { EventTimeAndMagnitude } from '@/utils/fetchEarthquakes';
 
 //TODO: TYPES
 type FactsPageContent = {
-  allDailyEvents: any;
-  allWeeklyEvents: any;
-  dailyEventsWithTimes: any;
-  eventsByDate: any;
+  allDailyEvents: Earthquakes;
+  allWeeklyEvents: Earthquakes;
+  dailyEventsWithTimes: EventTimeAndMagnitude[];
+  eventsByDate: EventsDateAndCount;
 };
 
 const FactsPageContent = ({
@@ -26,7 +28,7 @@ const FactsPageContent = ({
   useSyncAtom(allDailyEventsAtom, allDailyEvents);
   useSyncAtom(dailyEventsWithTimesAtom, dailyEventsWithTimes);
   useSyncAtom(allWeeklyEventsAtom, allWeeklyEvents);
-  useSyncAtom(eventsByWeekdayAtom, eventsByDate);
+  useSyncAtom(EventsDateAndCountAtom, eventsByDate);
   return (
     <main className="h-[screen]">
       <DailyStatsSection />
