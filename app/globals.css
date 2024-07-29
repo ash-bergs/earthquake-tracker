@@ -6,10 +6,10 @@ html,
 body {
   min-height: 100%;
   margin: 0;
-  background: rgb(0, 212, 219);
+  background: rgb(235, 255, 253);
   background: linear-gradient(
     0deg,
-    rgba(0, 212, 219, 0.41082370448179273) 0%,
+    rgba(18, 108, 120, 1) 0%,
     rgba(235, 255, 253, 1) 100%
   );
 }

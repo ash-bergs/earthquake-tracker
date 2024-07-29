@@ -26,10 +26,10 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
 
   /** color the magnitude section of the card based on event severity */
   const magClass = classNames({
-    'bg-blue-700': magnitude < 2,
-    'bg-blue-800': magnitude >= 2 && magnitude < 4,
-    'bg-red-500': magnitude >= 4 && magnitude < 6,
-    'bg-red-600': magnitude >= 6,
+    'bg-blue-600': magnitude < 2,
+    'bg-blue-700': magnitude >= 2 && magnitude < 4,
+    'bg-blue-800': magnitude >= 4 && magnitude < 6,
+    'bg-red-500': magnitude >= 6,
   });
 
   const removeQuake = () => {
