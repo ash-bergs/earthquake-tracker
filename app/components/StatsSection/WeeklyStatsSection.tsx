@@ -21,7 +21,7 @@ const WeeklyStatsSection = () => {
   if (!weeklyEvents) return null; //TODO: return spinner
 
   return (
-    <div className="flex flex-col gap-20 px-4 py-10 sm:px-10 md:px-10 lg:px-20 xl:px-40 2xl:px-80">
+    <div className="flex flex-col gap-20 px-4 py-10 sm:px-10 md:px-10 lg:px-20 xl:px-40 2xl:px-[500px]">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_2fr_1fr] lg:grid-cols-[2fr_2fr_1fr] gap-4">
         {/* Calendar and Total area */}
         <div className="flex flex-col gap-4 min-h-full">
@@ -30,7 +30,7 @@ const WeeklyStatsSection = () => {
             flex bg-white rounded-lg p-4
              "
           >
-            <p className="text-4xl font-bold text-blue-800">Today</p>
+            <p className="text-4xl font-bold text-blue-800">This Week</p>
           </div>
           <BreakdownCalendar calendarDate={weekRange} calendarText="Week of" />
           <TotalEarthquakes totalCount={totalCount} maxValue={600} />
