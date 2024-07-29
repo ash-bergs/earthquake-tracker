@@ -26,9 +26,9 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
 
   /** color the magnitude section of the card based on event severity */
   const magClass = classNames({
-    'bg-green-500': magnitude < 2,
-    'bg-yellow-500': magnitude >= 2 && magnitude < 4,
-    'bg-orange-500': magnitude >= 4 && magnitude < 6,
+    'bg-blue-600': magnitude < 2,
+    'bg-blue-700': magnitude >= 2 && magnitude < 4,
+    'bg-blue-800': magnitude >= 4 && magnitude < 6,
     'bg-red-500': magnitude >= 6,
   });
 
@@ -52,7 +52,7 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
   };
 
   return (
-    <div className="relative bg-white rounded-lg shadow-lg py-4 px-6 text-color-purple-heart-950">
+    <div className="relative bg-white rounded-lg border-[0.75px] border-gray-100 shadow-lg py-4 px-6 text-blue-800">
       <div className="flex gap-4 justify-between">
         <div
           className={classNames(
@@ -71,7 +71,7 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
           }}
         >
           {/** black 600 */}
-          <FaPaperPlane color="#263782" />
+          <FaPaperPlane color="#0a8694" />
         </button>
       </div>
 
@@ -95,7 +95,7 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
             }}
           >
             {/** royal blue 900 - same as text */}
-            <FaTrashCan size="18px" color="#263782" />
+            <FaTrashCan size="18px" color="#e71745" />
           </button>
         </div>
       </div>

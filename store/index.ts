@@ -4,6 +4,8 @@ import { MapRef } from 'react-map-gl';
 import { EarthquakeEvent } from '@/utils/fetchEarthquakes';
 import { Earthquakes } from '@/types';
 
+export const toolPanelOpenAtom = atom<Boolean>(true);
+
 export const earthquakesAtom = atom<Feature<Point>[]>([]);
 
 export const weeklyTopMagnitudeEventsAtom = atom<Feature<Point>[]>([]);
@@ -80,6 +82,7 @@ export const dailyActiveLocationsAtom = atom((get) => {
 });
 
 // most active locations
+// I don't have a table of country geometries to compare features to... but maybe I could create one?
 const getMostActiveLocations = (earthquakes: Earthquakes) => {
   const regions: { [key: string]: number } = {};
 

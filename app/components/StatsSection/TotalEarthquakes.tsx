@@ -12,12 +12,12 @@ type TotalEarthquakesProps = {
 
 const TotalEarthquakes = ({ totalCount, maxValue }: TotalEarthquakesProps) => {
   return (
-    <div className="flex flex-col gap-2 p-4 bg-gray-100 text-purple-heart-900 shadow-inner rounded-lg">
-      <p className=" text-md font-medium text-gray-500">Total Earthquakes</p>
+    <div className="flex flex-col  p-4 bg-white text-blue-900 shadow-sm rounded-lg border-[0.75px] border-gray-100">
+      <p className="text-lg font-semibold text-blue-800">Total Earthquakes</p>
       {/** Tooltip icon */}
       <ToolTip content={<ToolTipContent />} />
       <CircularScale value={totalCount} maxValue={maxValue} />
-      <div className="flex self-center gap-2 pb-4">
+      <div className="flex self-center gap-2 pb-4 ">
         <FaEarthAsia size="60px" />
         <div className="relative">
           <p className="text-5xl font-medium">{totalCount}</p>
@@ -34,13 +34,13 @@ export default TotalEarthquakes;
 
 const ToolTipContent = () => (
   <>
-    <p>How are these numbers calculated?</p>
+    <p className="font-semibold text-lg">How are these numbers calculated?</p>
     <p>
       These numbers are based off of earthquake events that are of a detectable
       and a significicant maginitude, 2.5 or greater.
     </p>
     <Link
-      className="text-sm underline"
+      className="font-semibold underline text-red-700"
       href={
         'https://www.usgs.gov/programs/earthquake-hazards/lists-maps-and-statistics'
       }

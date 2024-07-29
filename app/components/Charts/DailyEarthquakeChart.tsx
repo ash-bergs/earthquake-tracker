@@ -3,11 +3,11 @@ import { useAtomValue } from 'jotai';
 import { processedDailyEventsWithTimesAtom } from '@/store';
 
 const colorScale = [
-  '#3b82f6', // Blue
-  '#10b981', // Green
-  '#fbbf24', // Yellow
-  '#f59e0b', // Orange
-  '#ef4444', // Red
+  '#bae6fd', // Light Blue
+  '#7dd3fc', // Medium Blue
+  '#38bdf8', // Darker Blue
+  '#ff6d82', // Light Peachy
+  '#fa506d', // Peachy
 ];
 
 const getColorForCount = (count: number): string => {
@@ -38,6 +38,8 @@ const DailyEarthquakeChart: React.FC = () => {
         margin={{ top: 20, right: 60, bottom: 80, left: 60 }}
         padding={0.5}
         colors={({ data }) => data.color}
+        minValue={0}
+        maxValue={10}
         axisBottom={{
           tickSize: 5,
           tickPadding: 5,

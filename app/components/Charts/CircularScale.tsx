@@ -20,11 +20,11 @@ const HalfCircularScale = ({
     <svg className="w-auto h-auto transform" viewBox="0 0 100 50">
       <defs>
         <linearGradient id="gradient" gradientTransform="rotate(0)">
-          <stop offset="0%" stopColor="#3b82f6" /> {/* Blue */}
-          <stop offset="25%" stopColor="#10b981" /> {/* Green */}
-          <stop offset="50%" stopColor="#fbbf24" /> {/* Yellow */}
-          <stop offset="75%" stopColor="#f59e0b" /> {/* Orange */}
-          <stop offset="100%" stopColor="#ef4444" /> {/* Red */}
+          <stop offset="0%" stopColor="#bae6fd" /> {/* Light Blue */}
+          <stop offset="25%" stopColor="#7dd3fc" /> {/* Medium Blue */}
+          <stop offset="50%" stopColor="#38bdf8" /> {/* Darker Blue */}
+          <stop offset="75%" stopColor="#ff6d82" /> {/* Light Peachy */}
+          <stop offset="100%" stopColor="#fa506d" /> {/* Peachy */}
         </linearGradient>
       </defs>
       <path
@@ -50,11 +50,11 @@ const HalfCircularScale = ({
         strokeLinecap="round"
         style={{ transition: 'stroke-dashoffset 1s ease-out' }} // Add transition for smooth animation
       />
-      <text x="10" y="48" fill="white" fontSize="5" textAnchor="middle">
+      <text x="10" y="48" fill="#126c78" fontSize="4" textAnchor="middle">
         0
       </text>{' '}
       {/* Start number */}
-      <text x="90" y="48" fill="white" fontSize="5" textAnchor="middle">
+      <text x="90" y="48" fill="#126c78" fontSize="4" textAnchor="middle">
         {maxValue}
       </text>{' '}
       {/* End number */}
