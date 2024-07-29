@@ -7,7 +7,6 @@ import { FaChevronDown } from 'react-icons/fa';
 import { FaChevronUp } from 'react-icons/fa';
 import { FaScrewdriverWrench } from 'react-icons/fa6';
 
-//TODO: Create an overlay button view for this to open and close the selected quakes pane
 const ToolPanel = () => {
   const earthquakes = useAtomValue(selectedEarthquakesAtom);
   const [toolPanelOpen, setToolPanelOpen] = useAtom(toolPanelOpenAtom);
