@@ -24,7 +24,7 @@ const ToolPanel = () => {
           <h2 className="text-xl text-blue-800 font-semibold">Tool Panel</h2>
         </div>
         <button onClick={() => setToolPanelOpen(!toolPanelOpen)}>
-          {toolPanelOpen ? <FaChevronUp /> : <FaChevronDown />}
+          {toolPanelOpen ? <FaChevronDown /> : <FaChevronUp />}
         </button>
       </div>
       {/** this will be the mass action toolbar - it should only show when earthquakes are selected */}
