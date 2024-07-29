@@ -1,11 +1,12 @@
 import { FaEarthAsia } from 'react-icons/fa6';
-import { useAtomValue } from 'jotai';
-import { dailyActiveLocationsAtom } from '@/store';
 
-const MostActiveLocations = () => {
-  const locations = useAtomValue(dailyActiveLocationsAtom);
+type MostActiveLocationsProps = {
+  locations: any; //TODO: TYPE - number key, string value
+};
 
+const MostActiveLocations = ({ locations }: MostActiveLocationsProps) => {
   if (!locations) return null;
+  // doing one right now, because I'm not sure how I want this UI to be
   const mostActiveLocation = locations[0];
 
   return (

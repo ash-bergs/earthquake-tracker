@@ -6,11 +6,13 @@ import Link from 'next/link';
 import ToolTip from '../ToolTip/ToolTip';
 
 type TotalEarthquakesProps = {
-  totalCount: number;
+  totalCount?: number;
   maxValue: number;
 };
 
 const TotalEarthquakes = ({ totalCount, maxValue }: TotalEarthquakesProps) => {
+  if (!totalCount) return null; //TODO: return spinner or "unknown state" component
+
   return (
     <div className="flex flex-col  p-4 bg-white text-blue-900 shadow-sm rounded-lg border-[0.75px] border-gray-100">
       <p className="text-lg font-semibold text-blue-800">Total Earthquakes</p>

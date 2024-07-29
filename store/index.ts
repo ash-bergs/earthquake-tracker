@@ -1,8 +1,16 @@
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { Feature, Point } from 'geojson';
 import { MapRef } from 'react-map-gl';
-import { EarthquakeEvent } from '@/utils/fetchEarthquakes';
+import { EventTimeAndMagnitude } from '@/utils/fetchEarthquakes';
 import { Earthquakes } from '@/types';
+import { EarthquakeFeature, EventsDateAndCount } from '@/types';
+import {
+  getStartOfRange,
+  processEarthquakeDataByHour,
+  getMostActiveLocations,
+} from './utils';
+
+//TODO: Move helpers to an atoms utils module
 
 export const toolPanelOpenAtom = atom<Boolean>(true);
 
@@ -28,14 +36,6 @@ export const currentDateStringAtom = atom((get) =>
   get(currentDateAtom).toDateString()
 );
 
-// helper to calculate the start of the week to today
-const getStartOfRange = (date: Date) => {
-  const currentDate = new Date(date);
-  const startOfRange = new Date(currentDate);
-  startOfRange.setDate(currentDate.getDate() - 7);
-  return startOfRange;
-};
-
 // current week's range (ending with today's date)
 export const currentWeekRangeStringAtom = atom((get) => {
   const currentDate = get(currentDateAtom);
@@ -44,10 +44,10 @@ export const currentWeekRangeStringAtom = atom((get) => {
   return `${startOfRange.toDateString()} - ${currentDate.toDateString()}`;
 });
 
-// NEW ATOMS
-export const dailyEventsWithTimesAtom = atom<EarthquakeEvent[] | undefined>(
-  undefined
-);
+/* ------------------------------- DAILY ATOMS ------------------------------ */
+export const dailyEventsWithTimesAtom = atom<
+  EventTimeAndMagnitude[] | undefined
+>(undefined);
 
 export const allDailyEventsAtom = atom<Earthquakes | undefined>(undefined);
 
@@ -58,22 +58,22 @@ export const processedDailyEventsWithTimesAtom = atom<
 
   if (!dailyEvents) return undefined;
 
-  return processEarthquakeData(dailyEvents);
+  return processEarthquakeDataByHour(dailyEvents);
 });
 
-const processEarthquakeData = (
-  events: EarthquakeEvent[]
-): { hour: number; count: number }[] => {
-  const hourlyCounts = Array(24).fill(0);
+export const dailyTopEventsAtom = atom((get) => {
+  const dailyEvents = get(allDailyEventsAtom);
 
-  events.forEach((event) => {
-    const date = new Date(event.time);
-    const hour = date.getUTCHours(); // using UTC hour - we can handle converting later
-    hourlyCounts[hour]++;
-  });
+  if (!dailyEvents) return undefined;
 
-  return hourlyCounts.map((count, hour) => ({ hour, count }));
-};
+  // get the top 3 magnitude events
+  return dailyEvents
+    .sort(
+      (a: EarthquakeFeature, b: EarthquakeFeature) =>
+        b.properties?.mag - a.properties?.mag
+    )
+    .slice(0, 3);
+});
 
 export const dailyActiveLocationsAtom = atom((get) => {
   const dailyEvents = get(allDailyEventsAtom);
@@ -81,21 +81,31 @@ export const dailyActiveLocationsAtom = atom((get) => {
   return getMostActiveLocations(dailyEvents);
 });
 
-// most active locations
-// I don't have a table of country geometries to compare features to... but maybe I could create one?
-const getMostActiveLocations = (earthquakes: Earthquakes) => {
-  const regions: { [key: string]: number } = {};
+/* ----------------------------- END DAILY ATOMS ---------------------------- */
 
-  earthquakes.forEach((event) => {
-    const region = event.properties?.place.split(', ').pop();
+/* ------------------------------ WEEKLY ATOMS ------------------------------ */
+export const allWeeklyEventsAtom = atom<Earthquakes | undefined>(undefined);
 
-    if (regions[region]) {
-      regions[region]++;
-    } else {
-      regions[region] = 1;
-    }
-  });
+export const weeklyTopEventsAtom = atom((get) => {
+  const weeklyEvents = get(allWeeklyEventsAtom);
 
-  const sortedRegions = Object.entries(regions).sort((a, b) => b[1] - a[1]);
-  return sortedRegions.slice(0, 3).map((region) => region[0]);
-};
+  if (!weeklyEvents) return undefined;
+
+  return weeklyEvents
+    .sort(
+      (a: EarthquakeFeature, b: EarthquakeFeature) =>
+        b.properties?.mag - a.properties?.mag
+    )
+    .slice(0, 3);
+});
+
+export const weeklyActiveLocationsAtom = atom((get) => {
+  const weeklyEvents = get(allWeeklyEventsAtom);
+  if (!weeklyEvents) return undefined;
+  return getMostActiveLocations(weeklyEvents);
+});
+
+export const EventsDateAndCountAtom = atom<EventsDateAndCount | undefined>(
+  undefined
+);
+/* ---------------------------- END WEEKLY ATOMS ---------------------------- */
