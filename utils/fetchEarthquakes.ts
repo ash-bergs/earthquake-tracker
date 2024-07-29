@@ -2,7 +2,6 @@ import axios from 'axios';
 import { Earthquakes, EarthquakeFeature } from '@/types';
 
 //TODO: Why are we using axios? I could probably swap this for fetch and get some benefits from next
-//TODO: Cleanup - lots of functions here doing super similar things - we can streamline them, and integrate them with atoms where appropriate
 
 /** Fetch all the earthquake event geojson from today so far - all magnitudes */
 export const fetchEarthquakes = async (): Promise<Earthquakes> => {

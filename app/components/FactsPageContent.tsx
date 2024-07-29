@@ -11,7 +11,6 @@ import { DailyStatsSection, WeeklyStatsSection } from './StatsSection';
 import { Earthquakes, EventsDateAndCount } from '@/types';
 import { EventTimeAndMagnitude } from '@/utils/fetchEarthquakes';
 
-//TODO: TYPES
 type FactsPageContent = {
   allDailyEvents: Earthquakes;
   allWeeklyEvents: Earthquakes;
