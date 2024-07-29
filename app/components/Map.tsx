@@ -120,9 +120,9 @@ const Map = ({ earthquakes }: MapProps) => {
                   'interpolate',
                   ['linear'],
                   ['get', 'mag'],
-                  1,
-                  4,
                   6,
+                  12,
+                  18,
                   24,
                 ],
                 'circle-color': [

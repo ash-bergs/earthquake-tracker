@@ -36,5 +36,8 @@ I built this because I spend a lot of time reading and thinking about earthquake
 - Convert times to your current timezone through a drop down
 - Create a database and store weekly stats. This will allow us to provide a historical reference for the Weekly stats.
 - More specific map layers - be that by country, magnitude, day, week, etc. We can provide individual layers for these items and allow the user to choose which one is currently rendering.
+- Map info-window with expanded details on the event selected
+- Export daily or weekly data to csv/pdf.
+- Version 2.0, add volcanoes? Tsunamis? Other geological event data?
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
