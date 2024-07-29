@@ -1,37 +1,36 @@
 'use client';
 
-import { Earthquakes } from '@/types';
-import StatsSection from './StatsSection/StatsSection';
 import useSyncAtom from '@/store/useSyncAtom';
-import { allDailyEventsAtom, dailyEventsWithTimesAtom } from '@/store';
+import {
+  allDailyEventsAtom,
+  dailyEventsWithTimesAtom,
+  allWeeklyEventsAtom,
+  eventsByWeekdayAtom,
+} from '@/store';
+import { DailyStatsSection, WeeklyStatsSection } from './StatsSection';
 
+//TODO: TYPES
 type FactsPageContent = {
   allDailyEvents: any;
+  allWeeklyEvents: any;
   dailyEventsWithTimes: any;
-  topMagnitudeEvents: Earthquakes;
-  totalCount: number;
-  weeklyTotalCount: number;
-  weeklyTopMagnitudeEvents: Earthquakes;
+  eventsByDate: any;
 };
 
 const FactsPageContent = ({
   allDailyEvents,
   dailyEventsWithTimes,
-  topMagnitudeEvents,
-  totalCount,
-  weeklyTotalCount,
-  weeklyTopMagnitudeEvents,
+  allWeeklyEvents,
+  eventsByDate,
 }: FactsPageContent) => {
-  useSyncAtom(dailyEventsWithTimesAtom, dailyEventsWithTimes);
   useSyncAtom(allDailyEventsAtom, allDailyEvents);
+  useSyncAtom(dailyEventsWithTimesAtom, dailyEventsWithTimes);
+  useSyncAtom(allWeeklyEventsAtom, allWeeklyEvents);
+  useSyncAtom(eventsByWeekdayAtom, eventsByDate);
   return (
     <main className="h-[screen]">
-      <StatsSection topEvents={topMagnitudeEvents} totalCount={totalCount} />
-      <StatsSection
-        isWeekly
-        topEvents={weeklyTopMagnitudeEvents}
-        totalCount={weeklyTotalCount}
-      />
+      <DailyStatsSection />
+      <WeeklyStatsSection />
     </main>
   );
 };

@@ -1,1 +1,2 @@
-export { default as StatsSection } from './StatsSection';
+export { default as DailyStatsSection } from './DailyStatsSection';
+export { default as WeeklyStatsSection } from './WeeklyStatsSection';

@@ -42,13 +42,6 @@ export const fetchDailyStats = async (): Promise<any> => {
 
   const dailyEvents = res.data.features;
 
-  //? Is this too much to do here? Should atoms handle it?
-  // or is passing them data prepared straight up on the server a good move?
-  // maybe we'll just return the events - and the chart prepared data
-  // the other things can be done on the client and we can have spinners
-
-  // get the total number of significant magnitude events
-  const dailyEventsTotal = dailyEvents.length;
   // sort by time and magnitude - for chart
   const dailyEventsWithTimes = dailyEvents.map(
     (feature: EarthquakeFeature) => ({
@@ -56,26 +49,11 @@ export const fetchDailyStats = async (): Promise<any> => {
       magnitude: feature.properties?.mag,
     })
   );
-  // get the top 3 magnitude events
-  const topMagnitudeDailyEvents = dailyEvents
-    .sort(
-      (a: EarthquakeFeature, b: EarthquakeFeature) =>
-        b.properties?.mag - a.properties?.mag
-    )
-    .slice(0, 3);
 
   return {
     dailyEvents,
-    dailyEventsTotal,
     dailyEventsWithTimes,
-    topMagnitudeDailyEvents,
   };
-};
-
-/** Fetch this week's significant events */
-const getDayFromTimestamp = (timestamp: number) => {
-  const date = new Date(timestamp);
-  return date.getDay(); // will return 0 (Sunday) - 6 (Saturday)
 };
 
 export const fetchWeeklyStats = async (): Promise<any> => {
@@ -86,36 +64,24 @@ export const fetchWeeklyStats = async (): Promise<any> => {
 
   const weeklyEvents = res.data.features;
 
-  // total number of events
-  const weeklyEventsTotal = weeklyEvents.length;
-  // get events by weekday
-  // days will be 0 - 6 starting on Sunday, ending on Saturday
-  // we might consider handling that here
-  const eventsByWeekday = weeklyEvents.reduce(
-    (acc: { [key: number]: number }, feature: EarthquakeFeature) => {
-      const weekday = getDayFromTimestamp(feature.properties?.time);
-      if (weekday !== -1) {
-        if (!acc[weekday]) {
-          acc[weekday] = 0;
-        }
-        acc[weekday]++;
+  // sort events by date
+  // ensure days are in correct order, ending with today
+  const eventsByDate = weeklyEvents.reduce(
+    (acc: { [date: string]: number }, feature: EarthquakeFeature) => {
+      const date = new Date(feature.properties?.time)
+        .toISOString()
+        .split('T')[0];
+      if (!acc[date]) {
+        acc[date] = 0; // start at 0?
       }
+      acc[date]++;
       return acc;
     },
-    {} as { [key: number]: number }
+    {} as { [date: string]: number }
   );
-  // get the top three magnitude events
-  const topMagnitudeWeeklyEvents = weeklyEvents
-    .sort(
-      (a: EarthquakeFeature, b: EarthquakeFeature) =>
-        b.properties?.mag - a.properties?.mag
-    )
-    .slice(0, 3);
 
   return {
     weeklyEvents,
-    weeklyEventsTotal,
-    topMagnitudeWeeklyEvents,
-    eventsByWeekday,
+    eventsByDate,
   };
 };
