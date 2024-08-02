@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import {
-  currentDateStringAtom,
+  currentDateAtom,
   allDailyEventsAtom,
   dailyTopEventsAtom,
   dailyActiveLocationsAtom,
@@ -12,11 +12,18 @@ import TotalEarthquakes from './TotalEarthquakes';
 import DailyEarthquakeChart from '../Charts/DailyEarthquakeChart';
 
 const DailyStatsSection = () => {
-  const currentDate = useAtomValue(currentDateStringAtom);
+  const atomDate = useAtomValue(currentDateAtom);
   const dailyEvents = useAtomValue(allDailyEventsAtom);
   const topEvents = useAtomValue(dailyTopEventsAtom);
   const activeLocations = useAtomValue(dailyActiveLocationsAtom);
   const totalCount = dailyEvents?.length;
+
+  const currentDate = atomDate.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
 
   if (!dailyEvents) return null; //TODO: return spinner
 
