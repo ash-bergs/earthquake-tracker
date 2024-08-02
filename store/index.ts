@@ -29,16 +29,22 @@ export const setMap = () => useSetAtom(mapRefAtom);
 
 // Sneaky helpers
 
-export const currentDateAtom = atom(new Date());
+// this just gets todays date from the users system - which could definitely be wrong.
+// we need to site the atoms in
+export const currentDateAtom = atom((get) => {
+  const dailyEvents = get(allDailyEventsAtom);
 
-// current date gets the date and returns as a string
-export const currentDateStringAtom = atom((get) =>
-  get(currentDateAtom).toDateString()
-);
+  if (!dailyEvents) return undefined;
+  // cherry picking an event to grab the date from - need to think of a nice way to do this
+  const event = dailyEvents[0];
+
+  return new Date(event.properties?.time);
+});
 
 // current week's range (ending with today's date)
 export const currentWeekRangeStringAtom = atom((get) => {
   const currentDate = get(currentDateAtom);
+  if (!currentDate) return undefined;
   const startOfRange = getStartOfRange(currentDate);
 
   return `${startOfRange.toDateString()} - ${currentDate.toDateString()}`;

@@ -18,25 +18,9 @@ export interface EventTimeAndMagnitude {
   magnitude: number;
 }
 
-// Attempt at single function to handle all day needs
 export const fetchDailyStats = async (): Promise<any> => {
-  // fetch the earth quakes for the day
-  const today = new Date();
-  const startDate = today.toISOString().split('T')[0];
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
-  const endDate = tomorrow.toISOString().split('T')[0];
-
   const res = await axios.get(
-    'https://earthquake.usgs.gov/fdsnws/event/1/query',
-    {
-      params: {
-        format: 'geojson',
-        starttime: startDate,
-        endtime: endDate,
-        minmagnitude: 2.5,
-      },
-    }
+    'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson'
   );
 
   const dailyEvents = res.data.features;
