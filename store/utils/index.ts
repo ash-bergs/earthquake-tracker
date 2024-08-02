@@ -8,14 +8,29 @@ export const getStartOfRange = (date: Date) => {
   return startOfRange;
 };
 
-// we're processing this data twice, once on the request, and once here - seems a little confusing
 /** Helper to organize events by time of day - DAILY */
 export const processEarthquakeDataByHour = (
   events: EventTimeAndMagnitude[]
 ): { hour: number; count: number }[] => {
+  // get the most recent date from the events
+  const mostRecentDate = new Date(
+    events.reduce((latest, current) =>
+      current.time > latest.time ? current : latest
+    ).time
+  );
+
+  // filter the events that match the most recent date
+  const filteredEvents = events.filter((event) => {
+    const eventDate = new Date(event.time);
+
+    return eventDate.toDateString() === mostRecentDate.toDateString();
+  });
+
+  // init counter variable
   const hourlyCounts = Array(24).fill(0);
 
-  events.forEach((event) => {
+  // match events to their hour and sum
+  filteredEvents.forEach((event) => {
     const date = new Date(event.time);
     const hour = date.getUTCHours(); // using UTC hour - we can handle converting later
     hourlyCounts[hour]++;

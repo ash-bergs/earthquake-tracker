@@ -1,4 +1,4 @@
-import { atom, useAtomValue } from 'jotai';
+import { useAtomValue } from 'jotai';
 import {
   allDailyEventsAtom,
   dailyTopEventsAtom,
@@ -18,9 +18,12 @@ const DailyStatsSection = () => {
   const atomDate = useAtomValue(currentDateAtom);
   const totalCount = dailyEvents?.length;
 
-  const currentDate = atomDate?.toDateString();
-
-  console.log('CURRENT DATE ATOM: ', currentDate);
+  const currentDate = atomDate?.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  }); // Fri Aug 02 2024
 
   if (!dailyEvents) return null; //TODO: return spinner
 
