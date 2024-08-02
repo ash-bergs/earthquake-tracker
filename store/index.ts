@@ -31,11 +31,6 @@ export const setMap = () => useSetAtom(mapRefAtom);
 
 export const currentDateAtom = atom(new Date());
 
-// current date gets the date and returns as a string
-export const currentDateStringAtom = atom((get) =>
-  get(currentDateAtom).toDateString()
-);
-
 // current week's range (ending with today's date)
 export const currentWeekRangeStringAtom = atom((get) => {
   const currentDate = get(currentDateAtom);
