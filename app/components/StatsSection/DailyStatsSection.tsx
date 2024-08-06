@@ -28,8 +28,8 @@ const DailyStatsSection = () => {
   if (!dailyEvents) return null; //TODO: return spinner
 
   return (
-    <div className="flex flex-col gap-20 px-4 py-10 sm:px-10 md:px-10 lg:px-20 xl:px-40 2xl:px-[500px]">
-      <div className="grid grid-cols-1 md:grid-cols-[2fr_2fr_1fr] lg:grid-cols-[2fr_2fr_1fr] gap-4">
+    <div className="p-8">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_min-content] gap-6">
         {/* Calendar and Total area */}
         <div className="flex flex-col gap-4 min-h-full">
           <div
