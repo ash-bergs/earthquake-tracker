@@ -1,13 +1,22 @@
 'use client';
 import React, { useCallback, useState, useRef } from 'react';
 import { useAtom, useSetAtom } from 'jotai';
-import { selectedEarthquakesAtom, mapRefAtom } from '@/store';
-import ReactMapGL, { Source, Layer, Popup, MapRef } from 'react-map-gl';
+import useSyncAtom from '@/store/useSyncAtom';
+import {
+  selectedEarthquakesAtom,
+  mapRefAtom,
+  allDailyEventsAtom,
+  allWeeklyEventsAtom,
+} from '@/store';
+import ReactMapGL, { Popup, MapRef } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Feature, FeatureCollection, Point } from 'geojson';
+import { Feature, Point } from 'geojson';
+import DailyLayer from './layers/DailyEarthquakesLayer';
+import WeeklyLayer from './layers/WeeklyEarthquakesLayer';
 
 type MapProps = {
   earthquakes: Feature<Point>[];
+  weeklyEarthquakes: Feature<Point>[];
 };
 
 type PopupInfo = {
@@ -21,29 +30,21 @@ type PopupInfo = {
   x: number;
   y: number;
 };
-// TODO: breakout the layers
+
 // TODO: Add a layer for the weeks high magnitude events
-const Map = ({ earthquakes }: MapProps) => {
+const Map = ({ earthquakes, weeklyEarthquakes }: MapProps) => {
+  // set the atoms that will feed the geojson to map layers
+  // daily is ALL events today
+  useSyncAtom(allDailyEventsAtom, earthquakes);
+  // weekly is events over 2.5 magnitude
+  useSyncAtom(allWeeklyEventsAtom, weeklyEarthquakes);
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapRef | null>(null);
   const setMapRef = useSetAtom(mapRefAtom);
-
-  const onMapLoad = useCallback(() => {
-    if (mapRef.current) {
-      setMapRef(mapRef.current);
-    }
-  }, [setMapRef]);
-
+  const [popupInfo, setPopupInfo] = useState<PopupInfo | null>(null);
   const [selectedEarthquakes, setSelectedEarthquakes] = useAtom(
     selectedEarthquakesAtom
   );
-  const [popupInfo, setPopupInfo] = useState<PopupInfo | null>(null);
-
-  // we can just return this ssr?
-  const earthquakeGeoJSON: FeatureCollection<Point> = {
-    type: 'FeatureCollection',
-    features: earthquakes,
-  };
 
   const onHover = (event: any) => {
     const {
@@ -66,6 +67,12 @@ const Map = ({ earthquakes }: MapProps) => {
   const clearPopup = () => {
     setPopupInfo(null);
   };
+
+  const onMapLoad = useCallback(() => {
+    if (mapRef.current) {
+      setMapRef(mapRef.current);
+    }
+  }, [setMapRef]);
 
   const onClick = (event: any) => {
     const { features } = event;
@@ -101,7 +108,7 @@ const Map = ({ earthquakes }: MapProps) => {
         style={{ width: '100%', height: '100%' }}
         mapStyle="mapbox://styles/mapbox/navigation-day-v1"
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
-        interactiveLayerIds={['earthquake-layer']}
+        interactiveLayerIds={['earthquake-layer', 'weekly-earthquake-layer']}
         interactive={true}
         onMouseMove={onHover}
         onClick={onClick}
@@ -110,43 +117,8 @@ const Map = ({ earthquakes }: MapProps) => {
         onLoad={onMapLoad}
         ref={mapRef}
       >
-        {earthquakes.length > 0 && (
-          <Source id="earthquake-layer" type="geojson" data={earthquakeGeoJSON}>
-            <Layer
-              id="earthquake-layer"
-              type="circle"
-              paint={{
-                'circle-radius': [
-                  'interpolate',
-                  ['linear'],
-                  ['get', 'mag'],
-                  6,
-                  12,
-                  18,
-                  24,
-                ],
-                'circle-color': [
-                  'interpolate',
-                  ['linear'],
-                  ['get', 'mag'],
-                  1,
-                  '#2DC4B2',
-                  2,
-                  '#3BB3C3',
-                  3,
-                  '#669EC4',
-                  4,
-                  '#8B88B6',
-                  5,
-                  '#A2719B',
-                  6,
-                  '#AA5E79',
-                ],
-                'circle-opacity': 0.8,
-              }}
-            />
-          </Source>
-        )}
+        <DailyLayer />
+        <WeeklyLayer />
         {popupInfo && (
           <Popup
             longitude={popupInfo.longitude}

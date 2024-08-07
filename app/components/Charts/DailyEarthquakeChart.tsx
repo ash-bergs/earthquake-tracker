@@ -30,7 +30,7 @@ const DailyEarthquakeChart: React.FC = () => {
   }));
 
   return (
-    <div style={{ width: '100%', height: '100%' }}>
+    <div style={{ width: '100%', height: '100%', minWidth: '325px' }}>
       <ResponsiveBar
         data={chartData}
         keys={['count']}

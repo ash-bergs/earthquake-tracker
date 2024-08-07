@@ -33,7 +33,7 @@ const WeeklyEarthquakeChart: React.FC = () => {
     .reverse(); // reverse to lead UP to today, as the week range displays
 
   return (
-    <div style={{ width: '100%', height: '100%' }}>
+    <div style={{ width: '100%', height: '100%', minWidth: '325px' }}>
       <ResponsiveBar
         data={chartData}
         // keys determines the height of each bar
