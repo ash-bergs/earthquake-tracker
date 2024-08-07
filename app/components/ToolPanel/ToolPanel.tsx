@@ -1,5 +1,6 @@
 'use client';
 import { useAtom, useAtomValue } from 'jotai';
+import Link from 'next/link';
 import {
   activeLayersAtom,
   selectedEarthquakesAtom,
@@ -69,6 +70,13 @@ const ToolPanel = () => {
             {activeLayers.weekly ? <FaEye /> : <FaEyeSlash />}
           </button>
         </div>
+        {activeLayers.weekly && (
+          <div className="py-2">
+            <p className="text-sm">
+              Weekly events are those of 2.5 or greater magnitude
+            </p>
+          </div>
+        )}
       </div>
       {earthquakes && <QuakeCards />}
       {!earthquakes.length && (
