@@ -14,7 +14,10 @@ const TotalEarthquakes = ({ totalCount, maxValue }: TotalEarthquakesProps) => {
   if (!totalCount) return null; //TODO: return spinner or "unknown state" component
 
   return (
-    <div className="flex flex-col  p-4 bg-white text-blue-900 shadow-sm rounded-lg border-[0.75px] border-gray-100">
+    <div
+      className="flex flex-col  p-4 bg-white text-blue-900 shadow-sm rounded-lg border-[0.75px] border-gray-100"
+      style={{ minWidth: '250px' }}
+    >
       <p className="text-lg font-semibold text-blue-800">Total Earthquakes</p>
       {/** Tooltip icon */}
       <ToolTip content={<ToolTipContent />} />

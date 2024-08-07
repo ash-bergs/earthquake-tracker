@@ -36,7 +36,7 @@ export const currentWeekRangeStringAtom = atom((get) => {
   const currentDate = get(currentDateAtom);
   const startOfRange = getStartOfRange(currentDate);
 
-  return `${startOfRange.toDateString()} - ${currentDate.toDateString()}`;
+  return `${startOfRange.toLocaleDateString()} - ${currentDate.toLocaleDateString()}`;
 });
 
 /* ------------------------------- DAILY ATOMS ------------------------------ */
