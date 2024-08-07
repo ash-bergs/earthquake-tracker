@@ -6,11 +6,8 @@ import { Source, Layer } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 const DailyLayer = () => {
-  //get the value of earthquake geo json atom
   const earthquakeGeoJSON = useAtomValue(dailyLayerGeoJSONAtom);
   const activeLayers = useAtomValue(activeLayersAtom);
-  // get value of layer config - build some type of "selected layers" atom to track what's turned on and off
-  // if daily layer not selected, return null
 
   if (!activeLayers.daily) return null;
 

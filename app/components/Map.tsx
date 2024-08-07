@@ -30,7 +30,7 @@ type PopupInfo = {
   x: number;
   y: number;
 };
-// TODO: breakout the layers
+
 // TODO: Add a layer for the weeks high magnitude events
 const Map = ({ earthquakes, weeklyEarthquakes }: MapProps) => {
   // set the atoms that will feed the geojson to map layers
@@ -38,22 +38,13 @@ const Map = ({ earthquakes, weeklyEarthquakes }: MapProps) => {
   useSyncAtom(allDailyEventsAtom, earthquakes);
   // weekly is events over 2.5 magnitude
   useSyncAtom(allWeeklyEventsAtom, weeklyEarthquakes);
-
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapRef | null>(null);
   const setMapRef = useSetAtom(mapRefAtom);
-
-  const onMapLoad = useCallback(() => {
-    if (mapRef.current) {
-      setMapRef(mapRef.current);
-    }
-  }, [setMapRef]);
-
+  const [popupInfo, setPopupInfo] = useState<PopupInfo | null>(null);
   const [selectedEarthquakes, setSelectedEarthquakes] = useAtom(
     selectedEarthquakesAtom
   );
-
-  const [popupInfo, setPopupInfo] = useState<PopupInfo | null>(null);
 
   const onHover = (event: any) => {
     const {
@@ -76,6 +67,12 @@ const Map = ({ earthquakes, weeklyEarthquakes }: MapProps) => {
   const clearPopup = () => {
     setPopupInfo(null);
   };
+
+  const onMapLoad = useCallback(() => {
+    if (mapRef.current) {
+      setMapRef(mapRef.current);
+    }
+  }, [setMapRef]);
 
   const onClick = (event: any) => {
     const { features } = event;

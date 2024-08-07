@@ -10,12 +10,13 @@ import QuakeCards from '../QuakeCard';
 import { FaChevronDown } from 'react-icons/fa';
 import { FaChevronUp } from 'react-icons/fa';
 import { FaScrewdriverWrench } from 'react-icons/fa6';
+import { FaEye } from 'react-icons/fa';
+import { FaEyeSlash } from 'react-icons/fa';
 
 const ToolPanel = () => {
   const earthquakes = useAtomValue(selectedEarthquakesAtom);
   const [toolPanelOpen, setToolPanelOpen] = useAtom(toolPanelOpenAtom);
   const [activeLayers, setActiveLayer] = useAtom(activeLayersAtom);
-  console.log('Active Layers: ', activeLayers);
 
   // TODO: would probably look better if we migrated this to an AppShell component
   // it can slide in and take a set amount of the left side of the screen
@@ -37,29 +38,37 @@ const ToolPanel = () => {
       {/** this will be the mass action toolbar - it should only show when earthquakes are selected */}
       {/* {earthquakes && <EarthquakeActions />} */}
       <div>
-        <h2>Layers</h2>
-        <button
-          onClick={() => {
-            setActiveLayer({
-              daily: !activeLayers.daily,
-              weekly: activeLayers.weekly,
-            });
-          }}
-          className="p-2 bg-blue-100"
-        >
-          Daily
-        </button>
-        <button
-          onClick={() => {
-            setActiveLayer({
-              daily: activeLayers.daily,
-              weekly: !activeLayers.weekly,
-            });
-          }}
-          className="p-2 bg-blue-100"
-        >
-          Weekly
-        </button>
+        <h2 className="font-semibold text-lg">Layers</h2>
+        <div className="flex gap-4 py-2">
+          <button
+            onClick={() => {
+              setActiveLayer({
+                daily: !activeLayers.daily,
+                weekly: activeLayers.weekly,
+              });
+            }}
+            className={`flex items-center gap-2 p-2 ${
+              activeLayers.daily ? 'bg-white' : 'bg-gray-200'
+            } rounded-md`}
+          >
+            Daily
+            {activeLayers.daily ? <FaEye /> : <FaEyeSlash />}
+          </button>
+          <button
+            onClick={() => {
+              setActiveLayer({
+                daily: activeLayers.daily,
+                weekly: !activeLayers.weekly,
+              });
+            }}
+            className={`flex items-center gap-2 p-2 ${
+              activeLayers.weekly ? 'bg-white' : 'bg-gray-200'
+            } rounded-md`}
+          >
+            Weekly
+            {activeLayers.weekly ? <FaEye /> : <FaEyeSlash />}
+          </button>
+        </div>
       </div>
       {earthquakes && <QuakeCards />}
       {!earthquakes.length && (

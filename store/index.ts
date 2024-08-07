@@ -81,6 +81,7 @@ export const dailyActiveLocationsAtom = atom((get) => {
   return getMostActiveLocations(dailyEvents);
 });
 
+// atom to return the geojson for the dailyEarthquakeLayer
 export const dailyLayerGeoJSONAtom = atom((get) => {
   const earthquakes = get(allDailyEventsAtom);
   if (!earthquakes) return undefined;
@@ -119,6 +120,7 @@ export const EventsDateAndCountAtom = atom<EventsDateAndCount | undefined>(
   undefined
 );
 
+// atom to return the geojson for the weeklyEarthquakeLayer
 export const weeklyLayerGeoJSONAtom = atom((get) => {
   const earthquakes = get(allWeeklyEventsAtom);
   if (!earthquakes) return undefined;
