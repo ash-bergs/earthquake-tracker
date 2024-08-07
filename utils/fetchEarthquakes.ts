@@ -12,6 +12,14 @@ export const fetchEarthquakes = async (): Promise<Earthquakes> => {
   return res.data.features;
 };
 
+export const fetchWeeklyEarthquakes = async (): Promise<Earthquakes> => {
+  const res = await axios.get(
+    'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson'
+  );
+
+  return res.data.features;
+};
+
 /** Fetch today's significant events with timestamps */
 export interface EventTimeAndMagnitude {
   time: number; // Timestamp of the earthquake
