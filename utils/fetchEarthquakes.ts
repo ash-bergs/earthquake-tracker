@@ -30,7 +30,7 @@ export interface EventTimeAndMagnitude {
 export const fetchDailyStats = async (): Promise<any> => {
   // fetch the earth quakes for the day
   const res = await axios.get(
-    'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson'
+    'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson'
   );
 
   const dailyEvents = res.data.features;
@@ -50,22 +50,20 @@ export const fetchDailyStats = async (): Promise<any> => {
 };
 
 export const fetchWeeklyStats = async (): Promise<any> => {
-  // fetch the earthquake day of significant magnitude for the week
   const res = await axios.get(
     'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson'
   );
 
   const weeklyEvents = res.data.features;
 
-  // sort events by date
-  // ensure days are in correct order, ending with today
+  // sort events by date ensure days are in correct order, ending with today
   const eventsByDate = weeklyEvents.reduce(
     (acc: { [date: string]: number }, feature: EarthquakeFeature) => {
       const date = new Date(feature.properties?.time)
         .toISOString()
         .split('T')[0];
       if (!acc[date]) {
-        acc[date] = 0; // start at 0?
+        acc[date] = 0;
       }
       acc[date]++;
       return acc;
