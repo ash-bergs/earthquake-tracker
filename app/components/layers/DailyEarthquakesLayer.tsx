@@ -5,16 +5,14 @@ import { dailyLayerGeoJSONAtom, activeLayersAtom } from '@/store';
 import { Source, Layer } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-// we'll break the daily and weekly layers into min, med, max
-// but should we have a route that now just gets ALL teh data at once on page.tsx?
-// or do we manage making the calls in atoms, and only fetch what's needed?
-
 const DailyLayer = () => {
   const earthquakeGeoJSON = useAtomValue(dailyLayerGeoJSONAtom);
   const activeLayers = useAtomValue(activeLayersAtom);
 
-  // TODO: If active layers for daily has no selection for low/med/high
-  if (!activeLayers.daily) return null;
+  const isDailyActive =
+    activeLayers.daily.low || activeLayers.daily.med || activeLayers.daily.high;
+
+  if (!isDailyActive) return null;
 
   return (
     <Source id="earthquake-layer" type="geojson" data={earthquakeGeoJSON}>
