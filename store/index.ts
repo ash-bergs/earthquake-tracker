@@ -26,13 +26,16 @@ export const useMap = () => useAtomValue(mapRefAtom);
 export const setMap = () => useSetAtom(mapRefAtom);
 
 /** Map Layer Configuration */
-// I see this getting really out of hand if the number of layers were to scale...
 export const activeLayersAtom = atom<any>({
-  daily: true,
-  weekly: false,
+  daily: {
+    high: true,
+    med: true,
+    low: false, // default to showing med/high daily events
+  },
+  weekly: false, //TODO: weekly magnitude levels
 });
 
-// Sneaky helpers
+// Sneaky, smelly helpers
 //TODO: investigate improving these/making more reliable - moment js? a better ts option?
 export const currentDateAtom = atom(new Date());
 
@@ -84,11 +87,43 @@ export const dailyActiveLocationsAtom = atom((get) => {
 // atom to return the geojson for the dailyEarthquakeLayer
 export const dailyLayerGeoJSONAtom = atom((get) => {
   const earthquakes = get(allDailyEventsAtom);
+  const activeLayers = get(activeLayersAtom);
   if (!earthquakes) return undefined;
+
+  // define magnitude ranges in tuples
+  const lowMagnitudeRange = [0, 3];
+  const medMagnitudeRange = [3, 5];
+  const highMagnitudeRange = [5, 10];
+
+  const filteredEarthquakes = earthquakes.filter(
+    (feature: EarthquakeFeature) => {
+      const mag = feature.properties?.mag;
+      if (
+        activeLayers.daily.low &&
+        mag >= lowMagnitudeRange[0] &&
+        mag < lowMagnitudeRange[1]
+      ) {
+        return true;
+      }
+      if (
+        activeLayers.daily.med &&
+        mag >= medMagnitudeRange[0] &&
+        mag < medMagnitudeRange[1]
+      ) {
+        return true;
+      }
+      if (activeLayers.daily.high && mag >= highMagnitudeRange[0]) {
+        return true;
+      }
+      return false;
+    }
+  );
+
   const earthquakeGeoJSON: FeatureCollection<Point> = {
     type: 'FeatureCollection',
-    features: earthquakes,
+    features: filteredEarthquakes,
   };
+
   return earthquakeGeoJSON;
 });
 

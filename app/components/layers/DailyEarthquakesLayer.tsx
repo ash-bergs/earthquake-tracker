@@ -9,7 +9,10 @@ const DailyLayer = () => {
   const earthquakeGeoJSON = useAtomValue(dailyLayerGeoJSONAtom);
   const activeLayers = useAtomValue(activeLayersAtom);
 
-  if (!activeLayers.daily) return null;
+  const isDailyActive =
+    activeLayers.daily.low || activeLayers.daily.med || activeLayers.daily.high;
+
+  if (!isDailyActive) return null;
 
   return (
     <Source id="earthquake-layer" type="geojson" data={earthquakeGeoJSON}>

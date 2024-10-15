@@ -31,13 +31,13 @@ type PopupInfo = {
   y: number;
 };
 
-// TODO: Add a layer for the weeks high magnitude events
 const Map = ({ earthquakes, weeklyEarthquakes }: MapProps) => {
-  // set the atoms that will feed the geojson to map layers
+  // use the data fetched on the server on root page
   // daily is ALL events today
   useSyncAtom(allDailyEventsAtom, earthquakes);
   // weekly is events over 2.5 magnitude
   useSyncAtom(allWeeklyEventsAtom, weeklyEarthquakes);
+
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapRef | null>(null);
   const setMapRef = useSetAtom(mapRefAtom);
