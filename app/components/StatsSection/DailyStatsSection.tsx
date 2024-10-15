@@ -16,7 +16,7 @@ const DailyStatsSection = () => {
   const dailyEvents = useAtomValue(allDailyEventsAtom);
   const topEvents = useAtomValue(dailyTopEventsAtom);
   const activeLocations = useAtomValue(dailyActiveLocationsAtom);
-  const totalCount = dailyEvents?.length;
+  const totalCount = topEvents?.length;
 
   const currentDate = atomDate.toLocaleDateString('en-US', {
     weekday: 'long',

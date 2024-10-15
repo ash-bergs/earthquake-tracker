@@ -26,11 +26,31 @@ export interface EventTimeAndMagnitude {
   magnitude: number;
 }
 
-// Attempt at single function to handle all day needs
 export const fetchDailyStats = async (): Promise<any> => {
-  // fetch the earth quakes for the day
   const res = await axios.get(
     'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson'
+  );
+
+  const dailyEvents = res.data.features;
+
+  // sort by time and magnitude - for chart
+  const dailyEventsWithTimes = dailyEvents.map(
+    (feature: EarthquakeFeature) => ({
+      time: feature.properties?.time,
+      magnitude: feature.properties?.mag,
+    })
+  );
+
+  return {
+    dailyEvents,
+    dailyEventsWithTimes,
+  };
+};
+
+export const fetchDailyGraphStats = async (): Promise<any> => {
+  // fetch the earth quakes for the day 2.5 and above
+  const res = await axios.get(
+    'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson'
   );
 
   const dailyEvents = res.data.features;
