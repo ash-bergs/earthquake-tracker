@@ -32,7 +32,11 @@ export const activeLayersAtom = atom<any>({
     med: true,
     low: false, // default to showing med/high daily events
   },
-  weekly: false, //TODO: weekly magnitude levels
+  weekly: {
+    high: false,
+    med: false,
+    low: false,
+  },
 });
 
 // Sneaky, smelly helpers
@@ -158,11 +162,42 @@ export const EventsDateAndCountAtom = atom<EventsDateAndCount | undefined>(
 // atom to return the geojson for the weeklyEarthquakeLayer
 export const weeklyLayerGeoJSONAtom = atom((get) => {
   const earthquakes = get(allWeeklyEventsAtom);
+  const activeLayers = get(activeLayersAtom);
   if (!earthquakes) return undefined;
+
+  const lowMagnitudeRange = [0, 3];
+  const medMagnitudeRange = [3, 5];
+  const highMagnitudeRange = [5, 10];
+
+  const filteredEarthquakes = earthquakes.filter(
+    (feature: EarthquakeFeature) => {
+      const mag = feature.properties?.mag;
+      if (
+        activeLayers.weekly.low &&
+        mag >= lowMagnitudeRange[0] &&
+        mag < lowMagnitudeRange[1]
+      ) {
+        return true;
+      }
+      if (
+        activeLayers.weekly.med &&
+        mag >= medMagnitudeRange[0] &&
+        mag < medMagnitudeRange[1]
+      ) {
+        return true;
+      }
+      if (activeLayers.weekly.high && mag >= highMagnitudeRange[0]) {
+        return true;
+      }
+      return false;
+    }
+  );
+
   const earthquakeGeoJSON: FeatureCollection<Point> = {
     type: 'FeatureCollection',
-    features: earthquakes,
+    features: filteredEarthquakes,
   };
+
   return earthquakeGeoJSON;
 });
 /* ---------------------------- END WEEKLY ATOMS ---------------------------- */

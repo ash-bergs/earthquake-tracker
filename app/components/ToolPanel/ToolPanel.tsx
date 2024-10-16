@@ -38,8 +38,33 @@ const ToolPanel = () => {
     }
   };
 
+  const toggleWeeklyLayer = () => {
+    console.log('weekly click', activeLayers);
+    if (
+      activeLayers.weekly.high ||
+      activeLayers.weekly.med ||
+      activeLayers.weekly.low
+    ) {
+      setActiveLayer({
+        ...activeLayers,
+        weekly: { high: false, med: false, low: false },
+      });
+    } else {
+      // just turn back on medium and high?
+      setActiveLayer({
+        ...activeLayers,
+        weekly: { high: true, med: true, low: true },
+      });
+    }
+  };
+
   const isDailyActive =
     activeLayers.daily.low || activeLayers.daily.med || activeLayers.daily.high;
+
+  const isWeeklyyActive =
+    activeLayers.weekly.low ||
+    activeLayers.weekly.med ||
+    activeLayers.weekly.high;
 
   // helper to toggle magnitude levels with radio buttons
   //TODO: refactor to be reusable for weekly
@@ -49,6 +74,16 @@ const ToolPanel = () => {
       daily: {
         ...activeLayers.daily,
         [level]: !activeLayers.daily[level],
+      },
+    });
+  };
+
+  const toggleWeeklyMagnitude = (level: 'low' | 'med' | 'high') => {
+    setActiveLayer({
+      ...activeLayers,
+      weekly: {
+        ...activeLayers.weekly,
+        [level]: !activeLayers.weekly[level],
       },
     });
   };
@@ -133,25 +168,57 @@ const ToolPanel = () => {
           </div>
 
           <button
-            onClick={() => {
-              setActiveLayer({
-                daily: activeLayers.daily,
-                weekly: !activeLayers.weekly,
-              });
-            }}
+            onClick={toggleWeeklyLayer}
             className={`flex items-center gap-2 p-2 ${
-              activeLayers.weekly ? 'bg-white' : 'bg-gray-200'
+              isWeeklyyActive ? 'bg-white' : 'bg-gray-200'
             } rounded-md`}
           >
             Weekly
-            {activeLayers.weekly ? <FaEye /> : <FaEyeSlash />}
+            {isWeeklyyActive ? <FaEye /> : <FaEyeSlash />}
           </button>
         </div>
-        {activeLayers.weekly && (
-          <div className="py-2">
-            <p className="text-sm">
-              Weekly events are those of 2.5 or greater magnitude
-            </p>
+        {isWeeklyyActive && (
+          <div className="flex gap-2 py-3">
+            <fieldset>
+              <legend>Mag: </legend>
+            </fieldset>
+
+            <div>
+              <input
+                type="checkbox"
+                id="high"
+                name="high"
+                value="high"
+                checked={activeLayers.weekly.high}
+                onChange={() => toggleWeeklyMagnitude('high')}
+                style={{ marginRight: '4px' }}
+              />
+              <label htmlFor="high">High</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="med"
+                name="med"
+                value="med"
+                checked={activeLayers.weekly.med}
+                onChange={() => toggleWeeklyMagnitude('med')}
+                style={{ marginRight: '4px' }}
+              />
+              <label htmlFor="med">Medium</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="low"
+                name="low"
+                value="low"
+                checked={activeLayers.weekly.low}
+                onChange={() => toggleWeeklyMagnitude('low')}
+                style={{ marginRight: '4px' }}
+              />
+              <label htmlFor="low">Low</label>
+            </div>
           </div>
         )}
       </div>

@@ -71,7 +71,7 @@ export const fetchDailyGraphStats = async (): Promise<any> => {
 
 export const fetchWeeklyStats = async (): Promise<any> => {
   const res = await axios.get(
-    'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson'
+    'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson'
   );
 
   const weeklyEvents = res.data.features;
