@@ -1,6 +1,5 @@
 'use client';
 import { useAtom, useAtomValue } from 'jotai';
-import Link from 'next/link';
 import {
   activeLayersAtom,
   selectedEarthquakesAtom,
@@ -8,6 +7,7 @@ import {
 } from '@/store';
 import EarthquakeActions from './EarthquakeActions';
 import QuakeCards from '../QuakeCard';
+import MagnitudeToggle from './MagnitudeToggle';
 import { FaChevronDown } from 'react-icons/fa';
 import { FaChevronUp } from 'react-icons/fa';
 import { FaScrewdriverWrench } from 'react-icons/fa6';
@@ -61,23 +61,10 @@ const ToolPanel = () => {
   const isDailyActive =
     activeLayers.daily.low || activeLayers.daily.med || activeLayers.daily.high;
 
-  const isWeeklyyActive =
+  const isWeeklyActive =
     activeLayers.weekly.low ||
     activeLayers.weekly.med ||
     activeLayers.weekly.high;
-
-  const toggleMagnitude = (
-    layer: 'daily' | 'weekly',
-    level: 'low' | 'med' | 'high'
-  ) => {
-    setActiveLayer({
-      ...activeLayers,
-      [layer]: {
-        ...activeLayers[layer],
-        [level]: !activeLayers[layer][level], // toggle the selected magnitude on the given layer
-      },
-    });
-  };
 
   // TODO: would probably look better if we migrated this to an AppShell component
   // it can slide in and take a set amount of the left side of the screen
@@ -112,106 +99,20 @@ const ToolPanel = () => {
               {isDailyActive ? <FaEye /> : <FaEyeSlash />}
             </button>
 
-            {isDailyActive && (
-              <div className="flex gap-2 py-3">
-                <fieldset>
-                  <legend>Mag: </legend>
-                </fieldset>
-
-                <div>
-                  <input
-                    type="checkbox"
-                    id="high"
-                    name="high"
-                    value="high"
-                    checked={activeLayers.daily.high}
-                    onChange={() => toggleMagnitude('daily', 'high')}
-                    style={{ marginRight: '4px' }}
-                  />
-                  <label htmlFor="high">High</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    id="med"
-                    name="med"
-                    value="med"
-                    checked={activeLayers.daily.med}
-                    onChange={() => toggleMagnitude('daily', 'med')}
-                    style={{ marginRight: '4px' }}
-                  />
-                  <label htmlFor="med">Medium</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    id="low"
-                    name="low"
-                    value="low"
-                    checked={activeLayers.daily.low}
-                    onChange={() => toggleMagnitude('daily', 'low')}
-                    style={{ marginRight: '4px' }}
-                  />
-                  <label htmlFor="low">Low</label>
-                </div>
-              </div>
-            )}
+            {isDailyActive && <MagnitudeToggle layer="daily" />}
           </div>
 
           <button
             onClick={toggleWeeklyLayer}
             className={`flex items-center gap-2 p-2 ${
-              isWeeklyyActive ? 'bg-white' : 'bg-gray-200'
+              isWeeklyActive ? 'bg-white' : 'bg-gray-200'
             } rounded-md`}
           >
             Weekly
-            {isWeeklyyActive ? <FaEye /> : <FaEyeSlash />}
+            {isWeeklyActive ? <FaEye /> : <FaEyeSlash />}
           </button>
         </div>
-        {isWeeklyyActive && (
-          <div className="flex gap-2 py-3">
-            <fieldset>
-              <legend>Mag: </legend>
-            </fieldset>
-
-            <div>
-              <input
-                type="checkbox"
-                id="high"
-                name="high"
-                value="high"
-                checked={activeLayers.weekly.high}
-                onChange={() => toggleMagnitude('weekly', 'high')}
-                style={{ marginRight: '4px' }}
-              />
-              <label htmlFor="high">High</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="med"
-                name="med"
-                value="med"
-                checked={activeLayers.weekly.med}
-                onChange={() => toggleMagnitude('weekly', 'med')}
-                style={{ marginRight: '4px' }}
-              />
-              <label htmlFor="med">Medium</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="low"
-                name="low"
-                value="low"
-                checked={activeLayers.weekly.low}
-                onChange={() => toggleMagnitude('weekly', 'low')}
-                style={{ marginRight: '4px' }}
-              />
-              <label htmlFor="low">Low</label>
-            </div>
-          </div>
-        )}
+        {isWeeklyActive && <MagnitudeToggle layer="weekly" />}
       </div>
       {earthquakes && <QuakeCards />}
       {!earthquakes.length && (
