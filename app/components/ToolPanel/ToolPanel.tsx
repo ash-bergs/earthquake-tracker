@@ -5,58 +5,17 @@ import {
   selectedEarthquakesAtom,
   toolPanelOpenAtom,
 } from '@/store';
-import EarthquakeActions from './EarthquakeActions';
 import QuakeCards from '../QuakeCard';
+import LayerToggle from './LayerToggle';
 import MagnitudeToggle from './MagnitudeToggle';
 import { FaChevronDown } from 'react-icons/fa';
 import { FaChevronUp } from 'react-icons/fa';
 import { FaScrewdriverWrench } from 'react-icons/fa6';
-import { FaEye } from 'react-icons/fa';
-import { FaEyeSlash } from 'react-icons/fa';
 
 const ToolPanel = () => {
   const earthquakes = useAtomValue(selectedEarthquakesAtom);
   const [toolPanelOpen, setToolPanelOpen] = useAtom(toolPanelOpenAtom);
-  const [activeLayers, setActiveLayer] = useAtom(activeLayersAtom);
-
-  const toggleDailyLayer = () => {
-    if (
-      activeLayers.daily.high ||
-      activeLayers.daily.med ||
-      activeLayers.daily.low
-    ) {
-      setActiveLayer({
-        ...activeLayers,
-        daily: { high: false, med: false, low: false },
-      });
-    } else {
-      // just turn back on medium and high?
-      setActiveLayer({
-        ...activeLayers,
-        daily: { high: true, med: true, low: false },
-      });
-    }
-  };
-
-  const toggleWeeklyLayer = () => {
-    console.log('weekly click', activeLayers);
-    if (
-      activeLayers.weekly.high ||
-      activeLayers.weekly.med ||
-      activeLayers.weekly.low
-    ) {
-      setActiveLayer({
-        ...activeLayers,
-        weekly: { high: false, med: false, low: false },
-      });
-    } else {
-      // just turn back on medium and high?
-      setActiveLayer({
-        ...activeLayers,
-        weekly: { high: true, med: true, low: true },
-      });
-    }
-  };
+  const activeLayers = useAtomValue(activeLayersAtom);
 
   const isDailyActive =
     activeLayers.daily.low || activeLayers.daily.med || activeLayers.daily.high;
@@ -89,30 +48,14 @@ const ToolPanel = () => {
         <h2 className="font-semibold text-lg">Layers</h2>
         <div className="py-2">
           <div className="dailyContainer pb-2">
-            <button
-              onClick={toggleDailyLayer}
-              className={`flex items-center gap-2 p-2 ${
-                activeLayers.daily ? 'bg-white' : 'bg-gray-200'
-              } rounded-md`}
-            >
-              Daily
-              {isDailyActive ? <FaEye /> : <FaEyeSlash />}
-            </button>
-
+            <LayerToggle layer="daily" isActive={isDailyActive} />
             {isDailyActive && <MagnitudeToggle layer="daily" />}
           </div>
-
-          <button
-            onClick={toggleWeeklyLayer}
-            className={`flex items-center gap-2 p-2 ${
-              isWeeklyActive ? 'bg-white' : 'bg-gray-200'
-            } rounded-md`}
-          >
-            Weekly
-            {isWeeklyActive ? <FaEye /> : <FaEyeSlash />}
-          </button>
+          <div className="weeklyContainer pb-2">
+            <LayerToggle layer="weekly" isActive={isWeeklyActive} />
+            {isWeeklyActive && <MagnitudeToggle layer="weekly" />}
+          </div>
         </div>
-        {isWeeklyActive && <MagnitudeToggle layer="weekly" />}
       </div>
       {earthquakes && <QuakeCards />}
       {!earthquakes.length && (
