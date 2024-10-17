@@ -66,24 +66,15 @@ const ToolPanel = () => {
     activeLayers.weekly.med ||
     activeLayers.weekly.high;
 
-  // helper to toggle magnitude levels with radio buttons
-  //TODO: refactor to be reusable for weekly
-  const toggleMagnitude = (level: 'low' | 'med' | 'high') => {
+  const toggleMagnitude = (
+    layer: 'daily' | 'weekly',
+    level: 'low' | 'med' | 'high'
+  ) => {
     setActiveLayer({
       ...activeLayers,
-      daily: {
-        ...activeLayers.daily,
-        [level]: !activeLayers.daily[level],
-      },
-    });
-  };
-
-  const toggleWeeklyMagnitude = (level: 'low' | 'med' | 'high') => {
-    setActiveLayer({
-      ...activeLayers,
-      weekly: {
-        ...activeLayers.weekly,
-        [level]: !activeLayers.weekly[level],
+      [layer]: {
+        ...activeLayers[layer],
+        [level]: !activeLayers[layer][level], // toggle the selected magnitude on the given layer
       },
     });
   };
@@ -134,7 +125,7 @@ const ToolPanel = () => {
                     name="high"
                     value="high"
                     checked={activeLayers.daily.high}
-                    onChange={() => toggleMagnitude('high')}
+                    onChange={() => toggleMagnitude('daily', 'high')}
                     style={{ marginRight: '4px' }}
                   />
                   <label htmlFor="high">High</label>
@@ -146,7 +137,7 @@ const ToolPanel = () => {
                     name="med"
                     value="med"
                     checked={activeLayers.daily.med}
-                    onChange={() => toggleMagnitude('med')}
+                    onChange={() => toggleMagnitude('daily', 'med')}
                     style={{ marginRight: '4px' }}
                   />
                   <label htmlFor="med">Medium</label>
@@ -158,7 +149,7 @@ const ToolPanel = () => {
                     name="low"
                     value="low"
                     checked={activeLayers.daily.low}
-                    onChange={() => toggleMagnitude('low')}
+                    onChange={() => toggleMagnitude('daily', 'low')}
                     style={{ marginRight: '4px' }}
                   />
                   <label htmlFor="low">Low</label>
@@ -190,7 +181,7 @@ const ToolPanel = () => {
                 name="high"
                 value="high"
                 checked={activeLayers.weekly.high}
-                onChange={() => toggleWeeklyMagnitude('high')}
+                onChange={() => toggleMagnitude('weekly', 'high')}
                 style={{ marginRight: '4px' }}
               />
               <label htmlFor="high">High</label>
@@ -202,7 +193,7 @@ const ToolPanel = () => {
                 name="med"
                 value="med"
                 checked={activeLayers.weekly.med}
-                onChange={() => toggleWeeklyMagnitude('med')}
+                onChange={() => toggleMagnitude('weekly', 'med')}
                 style={{ marginRight: '4px' }}
               />
               <label htmlFor="med">Medium</label>
@@ -214,7 +205,7 @@ const ToolPanel = () => {
                 name="low"
                 value="low"
                 checked={activeLayers.weekly.low}
-                onChange={() => toggleWeeklyMagnitude('low')}
+                onChange={() => toggleMagnitude('weekly', 'low')}
                 style={{ marginRight: '4px' }}
               />
               <label htmlFor="low">Low</label>
