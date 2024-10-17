@@ -96,3 +96,31 @@ export const fetchWeeklyStats = async (): Promise<any> => {
     eventsByDate,
   };
 };
+
+export const fetchWeeklyGraphStats = async (): Promise<any> => {
+  const res = await axios.get(
+    'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson'
+  );
+
+  const weeklyEvents = res.data.features;
+
+  // sort events by date ensure days are in correct order, ending with today
+  const eventsByDate = weeklyEvents.reduce(
+    (acc: { [date: string]: number }, feature: EarthquakeFeature) => {
+      const date = new Date(feature.properties?.time)
+        .toISOString()
+        .split('T')[0];
+      if (!acc[date]) {
+        acc[date] = 0;
+      }
+      acc[date]++;
+      return acc;
+    },
+    {} as { [date: string]: number }
+  );
+
+  return {
+    weeklyEvents,
+    eventsByDate,
+  };
+};
