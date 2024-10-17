@@ -7,3 +7,5 @@ export type Earthquakes = EarthquakeFeature[];
 export type EventsDateAndCount = {
   [key: string]: number;
 };
+
+export type Layer = 'daily' | 'weekly';

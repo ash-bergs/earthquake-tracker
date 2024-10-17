@@ -1,8 +1,9 @@
 import { useAtom } from 'jotai';
 import { activeLayersAtom } from '@/store';
+import { Layer } from '@/types';
 
 interface MagnitudeToggleProps {
-  layer: 'daily' | 'weekly';
+  layer: Layer;
 }
 
 const MagnitudeToggle: React.FC<MagnitudeToggleProps> = ({ layer }) => {
@@ -16,7 +17,7 @@ const MagnitudeToggle: React.FC<MagnitudeToggleProps> = ({ layer }) => {
       ...activeLayers,
       [layer]: {
         ...activeLayers[layer],
-        [level]: !activeLayers[layer][level], // toggle the selected magnitude on the given layer
+        [level]: !activeLayers[layer][level],
       },
     });
   };
