@@ -1,57 +1,29 @@
 'use client';
 import { useAtom, useAtomValue } from 'jotai';
-import Link from 'next/link';
 import {
   activeLayersAtom,
   selectedEarthquakesAtom,
   toolPanelOpenAtom,
 } from '@/store';
-import EarthquakeActions from './EarthquakeActions';
 import QuakeCards from '../QuakeCard';
+import LayerToggle from './LayerToggle';
+import MagnitudeToggle from './MagnitudeToggle';
 import { FaChevronDown } from 'react-icons/fa';
 import { FaChevronUp } from 'react-icons/fa';
 import { FaScrewdriverWrench } from 'react-icons/fa6';
-import { FaEye } from 'react-icons/fa';
-import { FaEyeSlash } from 'react-icons/fa';
 
 const ToolPanel = () => {
   const earthquakes = useAtomValue(selectedEarthquakesAtom);
   const [toolPanelOpen, setToolPanelOpen] = useAtom(toolPanelOpenAtom);
-  const [activeLayers, setActiveLayer] = useAtom(activeLayersAtom);
-
-  const toggleDailyLayer = () => {
-    if (
-      activeLayers.daily.high ||
-      activeLayers.daily.med ||
-      activeLayers.daily.low
-    ) {
-      setActiveLayer({
-        ...activeLayers,
-        daily: { high: false, med: false, low: false },
-      });
-    } else {
-      // just turn back on medium and high?
-      setActiveLayer({
-        ...activeLayers,
-        daily: { high: true, med: true, low: false },
-      });
-    }
-  };
+  const activeLayers = useAtomValue(activeLayersAtom);
 
   const isDailyActive =
     activeLayers.daily.low || activeLayers.daily.med || activeLayers.daily.high;
 
-  // helper to toggle magnitude levels with radio buttons
-  //TODO: refactor to be reusable for weekly
-  const toggleMagnitude = (level: 'low' | 'med' | 'high') => {
-    setActiveLayer({
-      ...activeLayers,
-      daily: {
-        ...activeLayers.daily,
-        [level]: !activeLayers.daily[level],
-      },
-    });
-  };
+  const isWeeklyActive =
+    activeLayers.weekly.low ||
+    activeLayers.weekly.med ||
+    activeLayers.weekly.high;
 
   // TODO: would probably look better if we migrated this to an AppShell component
   // it can slide in and take a set amount of the left side of the screen
@@ -76,84 +48,14 @@ const ToolPanel = () => {
         <h2 className="font-semibold text-lg">Layers</h2>
         <div className="py-2">
           <div className="dailyContainer pb-2">
-            <button
-              onClick={toggleDailyLayer}
-              className={`flex items-center gap-2 p-2 ${
-                activeLayers.daily ? 'bg-white' : 'bg-gray-200'
-              } rounded-md`}
-            >
-              Daily
-              {isDailyActive ? <FaEye /> : <FaEyeSlash />}
-            </button>
-
-            {isDailyActive && (
-              <div className="flex gap-2 py-3">
-                <fieldset>
-                  <legend>Mag: </legend>
-                </fieldset>
-
-                <div>
-                  <input
-                    type="checkbox"
-                    id="high"
-                    name="high"
-                    value="high"
-                    checked={activeLayers.daily.high}
-                    onChange={() => toggleMagnitude('high')}
-                    style={{ marginRight: '4px' }}
-                  />
-                  <label htmlFor="high">High</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    id="med"
-                    name="med"
-                    value="med"
-                    checked={activeLayers.daily.med}
-                    onChange={() => toggleMagnitude('med')}
-                    style={{ marginRight: '4px' }}
-                  />
-                  <label htmlFor="med">Medium</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    id="low"
-                    name="low"
-                    value="low"
-                    checked={activeLayers.daily.low}
-                    onChange={() => toggleMagnitude('low')}
-                    style={{ marginRight: '4px' }}
-                  />
-                  <label htmlFor="low">Low</label>
-                </div>
-              </div>
-            )}
+            <LayerToggle layer="daily" isActive={isDailyActive} />
+            {isDailyActive && <MagnitudeToggle layer="daily" />}
           </div>
-
-          <button
-            onClick={() => {
-              setActiveLayer({
-                daily: activeLayers.daily,
-                weekly: !activeLayers.weekly,
-              });
-            }}
-            className={`flex items-center gap-2 p-2 ${
-              activeLayers.weekly ? 'bg-white' : 'bg-gray-200'
-            } rounded-md`}
-          >
-            Weekly
-            {activeLayers.weekly ? <FaEye /> : <FaEyeSlash />}
-          </button>
+          <div className="weeklyContainer pb-2">
+            <LayerToggle layer="weekly" isActive={isWeeklyActive} />
+            {isWeeklyActive && <MagnitudeToggle layer="weekly" />}
+          </div>
         </div>
-        {activeLayers.weekly && (
-          <div className="py-2">
-            <p className="text-sm">
-              Weekly events are those of 2.5 or greater magnitude
-            </p>
-          </div>
-        )}
       </div>
       {earthquakes && <QuakeCards />}
       {!earthquakes.length && (
