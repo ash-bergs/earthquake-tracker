@@ -1,16 +1,18 @@
 import Map from './components/Map';
 import ToolPanel from './components/ToolPanel';
-import {
-  fetchEarthquakes,
-  fetchWeeklyEarthquakes,
-} from '@/utils/fetchEarthquakes';
+import earthquakeService from '@/utils/services/Earthquake';
 
-//TODO: investigate the best way to handle caching and revalidating in this use-case 🤔
 export const revalidate = 900; // revalidate every 15 minutes
 
+/**
+ * Home component - Fetches earthquake data and renders the Map & ToolPanel
+ *
+ * @returns {JSX.Element} The home page layout with earthquake data
+ */
+
 export default async function Home() {
-  const earthquakes = await fetchEarthquakes();
-  const weeklyEarthquakes = await fetchWeeklyEarthquakes();
+  const earthquakes = await earthquakeService.fetchDailyEarthquakes();
+  const weeklyEarthquakes = await earthquakeService.fetchWeeklyEarthquakes();
 
   return (
     <div className="relative">
