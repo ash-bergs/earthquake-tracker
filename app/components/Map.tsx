@@ -32,10 +32,7 @@ type PopupInfo = {
 };
 
 const Map = ({ earthquakes, weeklyEarthquakes }: MapProps) => {
-  // use the data fetched on the server on root page
-  // daily is ALL events today
   useSyncAtom(allDailyEventsAtom, earthquakes);
-  // weekly is events over 2.5 magnitude
   useSyncAtom(allWeeklyEventsAtom, weeklyEarthquakes);
 
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
