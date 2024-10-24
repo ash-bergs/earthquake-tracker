@@ -12,20 +12,20 @@ import { Earthquakes, EventsDateAndCount } from '@/types';
 import { EventTimeAndMagnitude } from '@/utils/fetchEarthquakes';
 
 type FactsPageContent = {
-  allDailyEvents: Earthquakes;
+  // allDailyEvents: Earthquakes;
+  // dailyEventsWithTimes: EventTimeAndMagnitude[];
   allWeeklyEvents: Earthquakes;
-  dailyEventsWithTimes: EventTimeAndMagnitude[];
   eventsByDate: EventsDateAndCount;
 };
 
 const FactsPageContent = ({
-  allDailyEvents,
-  dailyEventsWithTimes,
+  // allDailyEvents,
+  // dailyEventsWithTimes,
   allWeeklyEvents,
   eventsByDate,
 }: FactsPageContent) => {
-  useSyncAtom(allDailyEventsAtom, allDailyEvents);
-  useSyncAtom(dailyEventsWithTimesAtom, dailyEventsWithTimes);
+  // useSyncAtom(allDailyEventsAtom, allDailyEvents);
+  // useSyncAtom(dailyEventsWithTimesAtom, dailyEventsWithTimes);
   useSyncAtom(allWeeklyEventsAtom, allWeeklyEvents);
   useSyncAtom(EventsDateAndCountAtom, eventsByDate);
   return (
