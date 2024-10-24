@@ -9,6 +9,7 @@ import {
   processEarthquakeDataByHour,
   getMostActiveLocations,
 } from './utils';
+import earthquakeService from '@/utils/services/Earthquake';
 
 export const toolPanelOpenAtom = atom<Boolean>(true);
 
@@ -58,12 +59,34 @@ export const dailyEventsWithTimesAtom = atom<
 
 export const allDailyEventsAtom = atom<Earthquakes | undefined>(undefined);
 
-export const processedDailyEventsWithTimesAtom = atom<
-  { hour: number; count: number }[] | undefined
->((get) => {
-  const dailyEvents = get(dailyEventsWithTimesAtom);
+/* ----------------------------------- new ---------------------------------- */
+// note to self - 'new' prepended atoms are the new ones (seems like that should be clear but future me in silly sometimes)
+// TODO: Replace instances of allDailyEventsAtom with this
+export const newAllDailyEventsAtom = atom(async () => {
+  const data = await earthquakeService.fetchDailyStats();
+  return data;
+});
 
-  if (!dailyEvents) return undefined;
+export const newdailyEventsWithTimesAtom = atom(async (get) => {
+  const dailyEvents = await get(newAllDailyEventsAtom);
+  if (!dailyEvents) return null;
+
+  const eventsByTime = dailyEvents.map((feature: EarthquakeFeature) => ({
+    time: feature.properties?.time,
+    magnitude: feature.properties?.mag,
+  }));
+
+  return eventsByTime;
+});
+
+/* ----------------------------------- End ---------------------------------- */
+
+export const processedDailyEventsWithTimesAtom = atom<
+  Promise<{ hour: number; count: number }[] | null>
+>(async (get) => {
+  const dailyEvents = await get(newdailyEventsWithTimesAtom);
+
+  if (!dailyEvents) return null;
 
   return processEarthquakeDataByHour(dailyEvents);
 });

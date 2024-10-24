@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
 import {
   currentDateAtom,
-  allDailyEventsAtom,
+  newAllDailyEventsAtom,
   dailyTopEventsAtom,
   dailyActiveLocationsAtom,
 } from '@/store';
@@ -13,7 +13,7 @@ import DailyEarthquakeChart from '../Charts/DailyEarthquakeChart';
 
 const DailyStatsSection = () => {
   const atomDate = useAtomValue(currentDateAtom);
-  const dailyEvents = useAtomValue(allDailyEventsAtom);
+  const dailyEvents = useAtomValue(newAllDailyEventsAtom);
   const topEvents = useAtomValue(dailyTopEventsAtom);
   const activeLocations = useAtomValue(dailyActiveLocationsAtom);
   const totalCount = topEvents?.length;
