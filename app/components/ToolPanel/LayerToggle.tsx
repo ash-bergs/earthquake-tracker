@@ -1,6 +1,6 @@
 import { Layer } from '@/types';
 import { useAtom } from 'jotai';
-import { activeLayersAtom } from '@/store';
+import store from '@/store';
 import { FaEye } from 'react-icons/fa';
 import { FaEyeSlash } from 'react-icons/fa';
 
@@ -10,7 +10,7 @@ interface LayerToggleProps {
 }
 
 const LayerToggle: React.FC<LayerToggleProps> = ({ layer, isActive }) => {
-  const [activeLayers, setActiveLayer] = useAtom(activeLayersAtom);
+  const [activeLayers, setActiveLayer] = useAtom(store.map.activeLayersAtom);
   const buttonText = layer.charAt(0).toUpperCase() + layer.slice(1);
 
   const toggleLayer = (layer: 'daily' | 'weekly') => {

@@ -11,12 +11,11 @@ export const revalidate = 900; // revalidate every 15 minutes
  */
 
 export default async function Home() {
-  const earthquakes = await earthquakeService.fetchDailyEarthquakes();
   const weeklyEarthquakes = await earthquakeService.fetchWeeklyEarthquakes();
 
   return (
     <div className="relative">
-      <Map earthquakes={earthquakes} weeklyEarthquakes={weeklyEarthquakes} />
+      <Map weeklyEarthquakes={weeklyEarthquakes} />
       <ToolPanel />
     </div>
   );

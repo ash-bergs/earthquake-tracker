@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai';
-import { activeLayersAtom } from '@/store';
+import store from '@/store';
 import { Layer } from '@/types';
 
 interface MagnitudeToggleProps {
@@ -7,7 +7,7 @@ interface MagnitudeToggleProps {
 }
 
 const MagnitudeToggle: React.FC<MagnitudeToggleProps> = ({ layer }) => {
-  const [activeLayers, setActiveLayers] = useAtom(activeLayersAtom);
+  const [activeLayers, setActiveLayers] = useAtom(store.map.activeLayersAtom);
 
   const toggleMagnitude = (
     layer: 'daily' | 'weekly',

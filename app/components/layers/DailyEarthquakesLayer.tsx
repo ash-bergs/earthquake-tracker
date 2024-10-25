@@ -1,13 +1,13 @@
 'use client';
 import React from 'react';
 import { useAtomValue } from 'jotai';
-import { dailyLayerGeoJSONAtom, activeLayersAtom } from '@/store';
+import store from '@/store';
 import { Source, Layer } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 const DailyLayer = () => {
-  const earthquakeGeoJSON = useAtomValue(dailyLayerGeoJSONAtom);
-  const activeLayers = useAtomValue(activeLayersAtom);
+  const earthquakeGeoJSON = useAtomValue(store.daily.dailyLayerGeoJSONAtom);
+  const activeLayers = useAtomValue(store.map.activeLayersAtom);
 
   const isDailyActive =
     activeLayers.daily.low || activeLayers.daily.med || activeLayers.daily.high;
