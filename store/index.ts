@@ -53,22 +53,16 @@ export const currentWeekRangeStringAtom = atom((get) => {
 });
 
 /* ------------------------------- DAILY ATOMS ------------------------------ */
-export const dailyEventsWithTimesAtom = atom<
-  EventTimeAndMagnitude[] | undefined
->(undefined);
 
-export const allDailyEventsAtom = atom<Earthquakes | undefined>(undefined);
+export const allDailyEventsAtom = atom<Promise<Earthquakes | undefined>>(
+  async () => {
+    const data = await earthquakeService.fetchDailyStats();
+    return data;
+  }
+);
 
-/* ----------------------------------- new ---------------------------------- */
-// note to self - 'new' prepended atoms are the new ones (seems like that should be clear but future me in silly sometimes)
-// TODO: Replace instances of allDailyEventsAtom with this
-export const newAllDailyEventsAtom = atom(async () => {
-  const data = await earthquakeService.fetchDailyStats();
-  return data;
-});
-
-export const newdailyEventsWithTimesAtom = atom(async (get) => {
-  const dailyEvents = await get(newAllDailyEventsAtom);
+export const dailyEventsWithTimesAtom = atom(async (get) => {
+  const dailyEvents = await get(allDailyEventsAtom);
   if (!dailyEvents) return null;
 
   const eventsByTime = dailyEvents.map((feature: EarthquakeFeature) => ({
@@ -79,20 +73,18 @@ export const newdailyEventsWithTimesAtom = atom(async (get) => {
   return eventsByTime;
 });
 
-/* ----------------------------------- End ---------------------------------- */
-
 export const processedDailyEventsWithTimesAtom = atom<
   Promise<{ hour: number; count: number }[] | null>
 >(async (get) => {
-  const dailyEvents = await get(newdailyEventsWithTimesAtom);
+  const dailyEvents = await get(dailyEventsWithTimesAtom);
 
   if (!dailyEvents) return null;
 
   return processEarthquakeDataByHour(dailyEvents);
 });
 
-export const dailyTopEventsAtom = atom((get) => {
-  const dailyEvents = get(allDailyEventsAtom);
+export const dailyTopEventsAtom = atom(async (get) => {
+  const dailyEvents = await get(allDailyEventsAtom);
 
   if (!dailyEvents) return undefined;
 
@@ -105,15 +97,15 @@ export const dailyTopEventsAtom = atom((get) => {
     .slice(0, 3);
 });
 
-export const dailyActiveLocationsAtom = atom((get) => {
-  const dailyEvents = get(allDailyEventsAtom);
+export const dailyActiveLocationsAtom = atom(async (get) => {
+  const dailyEvents = await get(allDailyEventsAtom);
   if (!dailyEvents) return undefined;
   return getMostActiveLocations(dailyEvents);
 });
 
 // atom to return the geojson for the dailyEarthquakeLayer
-export const dailyLayerGeoJSONAtom = atom((get) => {
-  const earthquakes = get(allDailyEventsAtom);
+export const dailyLayerGeoJSONAtom = atom(async (get) => {
+  const earthquakes = await get(allDailyEventsAtom);
   const activeLayers = get(activeLayersAtom);
   if (!earthquakes) return undefined;
 
@@ -154,7 +146,7 @@ export const dailyLayerGeoJSONAtom = atom((get) => {
   return earthquakeGeoJSON;
 });
 
-/* ----------------------------- END DAILY ATOMS ---------------------------- */
+/* ----------------------------------- end ---------------------------------- */
 
 /* ------------------------------ WEEKLY ATOMS ------------------------------ */
 export const allWeeklyEventsAtom = atom<Earthquakes | undefined>(undefined);

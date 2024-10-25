@@ -5,7 +5,6 @@ import useSyncAtom from '@/store/useSyncAtom';
 import {
   selectedEarthquakesAtom,
   mapRefAtom,
-  allDailyEventsAtom,
   allWeeklyEventsAtom,
 } from '@/store';
 import ReactMapGL, { Popup, MapRef } from 'react-map-gl';
@@ -15,7 +14,6 @@ import DailyLayer from './layers/DailyEarthquakesLayer';
 import WeeklyLayer from './layers/WeeklyEarthquakesLayer';
 
 type MapProps = {
-  earthquakes: Feature<Point>[];
   weeklyEarthquakes: Feature<Point>[];
 };
 
@@ -31,8 +29,7 @@ type PopupInfo = {
   y: number;
 };
 
-const Map = ({ earthquakes, weeklyEarthquakes }: MapProps) => {
-  useSyncAtom(allDailyEventsAtom, earthquakes);
+const Map = ({ weeklyEarthquakes }: MapProps) => {
   useSyncAtom(allWeeklyEventsAtom, weeklyEarthquakes);
 
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
