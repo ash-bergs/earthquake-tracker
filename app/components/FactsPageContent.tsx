@@ -1,7 +1,7 @@
 'use client';
 
 import useSyncAtom from '@/store/useSyncAtom';
-import { allWeeklyEventsAtom, EventsDateAndCountAtom } from '@/store';
+import store from '@/store';
 import { DailyStatsSection, WeeklyStatsSection } from './StatsSection';
 import { Earthquakes, EventsDateAndCount } from '@/types';
 
@@ -14,8 +14,8 @@ const FactsPageContent = ({
   allWeeklyEvents,
   eventsByDate,
 }: FactsPageContent) => {
-  useSyncAtom(allWeeklyEventsAtom, allWeeklyEvents);
-  useSyncAtom(EventsDateAndCountAtom, eventsByDate);
+  useSyncAtom(store.weekly.allWeeklyEventsAtom, allWeeklyEvents);
+  useSyncAtom(store.weekly.EventsDateAndCountAtom, eventsByDate);
   return (
     <main className="h-[screen]">
       <DailyStatsSection />

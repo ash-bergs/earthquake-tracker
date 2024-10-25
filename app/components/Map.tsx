@@ -2,16 +2,12 @@
 import React, { useCallback, useState, useRef } from 'react';
 import { useAtom, useSetAtom } from 'jotai';
 import useSyncAtom from '@/store/useSyncAtom';
-import {
-  selectedEarthquakesAtom,
-  mapRefAtom,
-  allWeeklyEventsAtom,
-} from '@/store';
 import ReactMapGL, { Popup, MapRef } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Feature, Point } from 'geojson';
 import DailyLayer from './layers/DailyEarthquakesLayer';
 import WeeklyLayer from './layers/WeeklyEarthquakesLayer';
+import store from '@/store';
 
 type MapProps = {
   weeklyEarthquakes: Feature<Point>[];
@@ -30,14 +26,14 @@ type PopupInfo = {
 };
 
 const Map = ({ weeklyEarthquakes }: MapProps) => {
-  useSyncAtom(allWeeklyEventsAtom, weeklyEarthquakes);
+  useSyncAtom(store.weekly.allWeeklyEventsAtom, weeklyEarthquakes);
 
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapRef | null>(null);
-  const setMapRef = useSetAtom(mapRefAtom);
+  const setMapRef = useSetAtom(store.map.mapRefAtom);
   const [popupInfo, setPopupInfo] = useState<PopupInfo | null>(null);
   const [selectedEarthquakes, setSelectedEarthquakes] = useAtom(
-    selectedEarthquakesAtom
+    store.map.selectedEarthquakesAtom
   );
 
   const onHover = (event: any) => {

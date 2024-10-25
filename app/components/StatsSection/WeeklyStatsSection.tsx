@@ -1,10 +1,6 @@
 import { useAtomValue } from 'jotai';
-import {
-  currentWeekRangeStringAtom,
-  allWeeklyEventsAtom,
-  weeklyTopEventsAtom,
-  weeklyActiveLocationsAtom,
-} from '@/store';
+import store from '@/store';
+
 import BreakdownCalendar from './BreakdownCalendar';
 import MostActiveLocations from './MostActiveLocations';
 import StandardQuakeCard from '../StandardQuakeCard';
@@ -12,10 +8,10 @@ import TotalEarthquakes from './TotalEarthquakes';
 import WeeklyEarthquakeChart from '../Charts/WeeklyEarthquakeChart';
 
 const WeeklyStatsSection = () => {
-  const weekRange = useAtomValue(currentWeekRangeStringAtom);
-  const weeklyEvents = useAtomValue(allWeeklyEventsAtom);
-  const activeLocations = useAtomValue(weeklyActiveLocationsAtom);
-  const topEvents = useAtomValue(weeklyTopEventsAtom);
+  const weekRange = useAtomValue(store.weekly.currentWeekRangeStringAtom);
+  const weeklyEvents = useAtomValue(store.weekly.allWeeklyEventsAtom);
+  const activeLocations = useAtomValue(store.weekly.weeklyActiveLocationsAtom);
+  const topEvents = useAtomValue(store.weekly.weeklyTopEventsAtom);
   const totalCount = weeklyEvents?.length;
 
   if (!weeklyEvents) return null; //TODO: return spinner

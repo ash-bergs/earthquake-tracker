@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { selectedEarthquakesAtom, useMap } from '@/store';
+import store from '@/store';
 import { parsePlace } from './utils';
 import { FaTrashCan } from 'react-icons/fa6';
 import { FaPaperPlane } from 'react-icons/fa6';
@@ -20,9 +20,9 @@ type QuakeCardProps = {
 
 const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
   const name = parsePlace(place);
-  const map = useMap();
+  const map = store.map.useMap();
   const magnitude = Number(parseFloat(mag).toFixed(1));
-  const setSelectedEarthquakes = useSetAtom(selectedEarthquakesAtom);
+  const setSelectedEarthquakes = useSetAtom(store.map.selectedEarthquakesAtom);
 
   /** color the magnitude section of the card based on event severity */
   const magClass = classNames({
@@ -105,7 +105,7 @@ const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
 
 //TODO: add sorting, mass delete
 const QuakeCards = () => {
-  const earthquakes = useAtomValue(selectedEarthquakesAtom);
+  const earthquakes = useAtomValue(store.map.selectedEarthquakesAtom);
 
   //TODO: return a map tool icon when null, or closed
   if (!earthquakes.length) null;

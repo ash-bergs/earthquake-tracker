@@ -1,9 +1,9 @@
 'use client';
 import { useAtomValue } from 'jotai';
-import { selectedEarthquakesAtom } from '@/store';
+import store from '@/store';
 
 const EarthquakeActions = () => {
-  const earthquakes = useAtomValue(selectedEarthquakesAtom);
+  const earthquakes = useAtomValue(store.map.selectedEarthquakesAtom);
 
   if (!earthquakes.length) return null;
   return (

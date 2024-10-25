@@ -1,6 +1,6 @@
 import { ResponsiveBar } from '@nivo/bar';
 import { useAtomValue } from 'jotai';
-import { processedDailyEventsWithTimesAtom } from '@/store';
+import store from '@/store';
 
 const colorScale = [
   '#bae6fd', // Light Blue
@@ -19,7 +19,7 @@ const getColorForCount = (count: number): string => {
 };
 
 const DailyEarthquakeChart: React.FC = () => {
-  const data = useAtomValue(processedDailyEventsWithTimesAtom);
+  const data = useAtomValue(store.daily.processedDailyEventsWithTimesAtom);
 
   if (!data) return null;
 

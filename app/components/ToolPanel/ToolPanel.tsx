@@ -1,10 +1,6 @@
 'use client';
 import { useAtom, useAtomValue } from 'jotai';
-import {
-  activeLayersAtom,
-  selectedEarthquakesAtom,
-  toolPanelOpenAtom,
-} from '@/store';
+import store from '@/store';
 import QuakeCards from '../QuakeCard';
 import LayerToggle from './LayerToggle';
 import MagnitudeToggle from './MagnitudeToggle';
@@ -13,9 +9,11 @@ import { FaChevronUp } from 'react-icons/fa';
 import { FaScrewdriverWrench } from 'react-icons/fa6';
 
 const ToolPanel = () => {
-  const earthquakes = useAtomValue(selectedEarthquakesAtom);
-  const [toolPanelOpen, setToolPanelOpen] = useAtom(toolPanelOpenAtom);
-  const activeLayers = useAtomValue(activeLayersAtom);
+  const earthquakes = useAtomValue(store.map.selectedEarthquakesAtom);
+  const [toolPanelOpen, setToolPanelOpen] = useAtom(
+    store.map.toolPanelOpenAtom
+  );
+  const activeLayers = useAtomValue(store.map.activeLayersAtom);
 
   const isDailyActive =
     activeLayers.daily.low || activeLayers.daily.med || activeLayers.daily.high;
