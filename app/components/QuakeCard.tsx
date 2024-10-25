@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useAtomValue, useSetAtom } from 'jotai';
 import store from '@/store';
+import { useMap } from '@/store/utils';
 import { parsePlace } from './utils';
 import { FaTrashCan } from 'react-icons/fa6';
 import { FaPaperPlane } from 'react-icons/fa6';
@@ -20,7 +21,7 @@ type QuakeCardProps = {
 
 const QuakeCard = ({ place, code, coords, mag, time, url }: QuakeCardProps) => {
   const name = parsePlace(place);
-  const map = store.map.useMap();
+  const map = useMap();
   const magnitude = Number(parseFloat(mag).toFixed(1));
   const setSelectedEarthquakes = useSetAtom(store.map.selectedEarthquakesAtom);
 

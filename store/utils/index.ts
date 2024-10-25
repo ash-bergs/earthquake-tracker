@@ -1,3 +1,5 @@
+import { useAtomValue, useSetAtom } from 'jotai';
+import store from '@/store';
 import { EventTimeAndMagnitude } from '@/utils/fetchEarthquakes';
 import { Earthquakes } from '@/types';
 // helper to calculate the start of the week to today
@@ -45,3 +47,8 @@ export const getMostActiveLocations = (earthquakes: Earthquakes) => {
   // return the most seen place
   return sortedRegions.slice(0, 3).map((region) => region[0]);
 };
+
+/** Hook to use the map reference */
+// this makes it so we can perform actions without passing them from the map
+export const useMap = () => useAtomValue(store.map.mapRefAtom);
+export const setMap = () => useSetAtom(store.map.mapRefAtom);
