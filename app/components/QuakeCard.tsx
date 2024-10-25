@@ -111,7 +111,7 @@ const QuakeCards = () => {
   //TODO: return a map tool icon when null, or closed
   if (!earthquakes.length) null;
   return (
-    <div className="flex flex-col gap-4 max-h-[55vh] overflow-scroll mb-1">
+    <div className="flex flex-col gap-4 max-h-[55vh] overflow-scroll p-4 mb-1">
       {earthquakes.map((quake: any) => {
         return (
           <QuakeCard

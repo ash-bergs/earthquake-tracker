@@ -35,8 +35,8 @@ const LayerToggle: React.FC<LayerToggleProps> = ({ layer, isActive }) => {
     <button
       onClick={() => toggleLayer(layer)}
       className={`flex items-center gap-2 p-2 ${
-        isActive ? 'bg-white' : 'bg-gray-200'
-      } rounded-md`}
+        isActive ? 'bg-blue-700' : 'bg-gray-200'
+      } ${isActive ? 'text-white' : ''} rounded-md`}
       aria-label={`${isActive ? 'Hide' : 'Show'} ${layer} layer`}
     >
       {buttonText} {isActive ? <FaEye /> : <FaEyeSlash />}
