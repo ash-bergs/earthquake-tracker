@@ -1,17 +1,12 @@
 'use client';
 import React, { useCallback, useState, useRef } from 'react';
 import { useAtom, useSetAtom } from 'jotai';
-import useSyncAtom from '@/store/useSyncAtom';
 import ReactMapGL, { Popup, MapRef } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Feature, Point } from 'geojson';
 import DailyLayer from './layers/DailyEarthquakesLayer';
 import WeeklyLayer from './layers/WeeklyEarthquakesLayer';
 import store from '@/store';
-
-type MapProps = {
-  weeklyEarthquakes: Feature<Point>[];
-};
 
 type PopupInfo = {
   longitude: number;
@@ -25,9 +20,7 @@ type PopupInfo = {
   y: number;
 };
 
-const Map = ({ weeklyEarthquakes }: MapProps) => {
-  useSyncAtom(store.weekly.allWeeklyEventsAtom, weeklyEarthquakes);
-
+const Map = () => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapRef | null>(null);
   const setMapRef = useSetAtom(store.map.mapRefAtom);

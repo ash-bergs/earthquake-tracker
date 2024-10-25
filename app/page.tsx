@@ -1,6 +1,5 @@
 import Map from './components/Map';
 import ToolPanel from './components/ToolPanel';
-import earthquakeService from '@/utils/services/Earthquake';
 
 export const revalidate = 900; // revalidate every 15 minutes
 
@@ -11,11 +10,9 @@ export const revalidate = 900; // revalidate every 15 minutes
  */
 
 export default async function Home() {
-  const weeklyEarthquakes = await earthquakeService.fetchWeeklyEarthquakes();
-
   return (
     <div className="relative">
-      <Map weeklyEarthquakes={weeklyEarthquakes} />
+      <Map />
       <ToolPanel />
     </div>
   );

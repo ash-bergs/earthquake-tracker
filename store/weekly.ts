@@ -4,13 +4,22 @@ import { Earthquakes } from '@/types';
 import { EarthquakeFeature, EventsDateAndCount } from '@/types';
 import * as mapStore from './map';
 import { getMostActiveLocations } from './utils';
+import earthquakeService from '@/utils/services/Earthquake';
 
 export const weeklyTopMagnitudeEventsAtom = atom<Feature<Point>[]>([]);
 
-export const allWeeklyEventsAtom = atom<Earthquakes | undefined>(undefined);
+/* ----------------------------------- NEW ---------------------------------- */
+export const allWeeklyEventsAtom = atom<Promise<Earthquakes | undefined>>(
+  async () => {
+    const data = await earthquakeService.fetchWeeklyStats();
+    return data;
+  }
+);
 
-export const weeklyTopEventsAtom = atom((get) => {
-  const weeklyEvents = get(allWeeklyEventsAtom);
+/* ----------------------------------- END ---------------------------------- */
+
+export const weeklyTopEventsAtom = atom(async (get) => {
+  const weeklyEvents = await get(allWeeklyEventsAtom);
 
   if (!weeklyEvents) return undefined;
 
@@ -22,19 +31,38 @@ export const weeklyTopEventsAtom = atom((get) => {
     .slice(0, 3);
 });
 
-export const weeklyActiveLocationsAtom = atom((get) => {
-  const weeklyEvents = get(allWeeklyEventsAtom);
+export const weeklyActiveLocationsAtom = atom(async (get) => {
+  const weeklyEvents = await get(allWeeklyEventsAtom);
   if (!weeklyEvents) return undefined;
   return getMostActiveLocations(weeklyEvents);
 });
 
-export const EventsDateAndCountAtom = atom<EventsDateAndCount | undefined>(
-  undefined
-);
+export const EventsDateAndCountAtom = atom(async (get) => {
+  const weeklyEvents = await get(allWeeklyEventsAtom);
+
+  if (!weeklyEvents) return null;
+
+  // sort events by date ensure days are in correct order, ending with today
+  const eventsByDate = weeklyEvents.reduce(
+    (acc: { [date: string]: number }, feature: EarthquakeFeature) => {
+      const date = new Date(feature.properties?.time)
+        .toISOString()
+        .split('T')[0];
+      if (!acc[date]) {
+        acc[date] = 0;
+      }
+      acc[date]++;
+      return acc;
+    },
+    {} as { [date: string]: number }
+  );
+
+  return eventsByDate;
+});
 
 // atom to return the geojson for the weeklyEarthquakeLayer
-export const weeklyLayerGeoJSONAtom = atom((get) => {
-  const earthquakes = get(allWeeklyEventsAtom);
+export const weeklyLayerGeoJSONAtom = atom(async (get) => {
+  const earthquakes = await get(allWeeklyEventsAtom);
   const activeLayers = get(mapStore.activeLayersAtom);
   if (!earthquakes) return undefined;
 
