@@ -1,4 +1,3 @@
-import { fetchWeeklyGraphStats } from '@/utils/fetchEarthquakes';
 import FactsPageContent from '../components/FactsPageContent';
 
 export const revalidate = 900; // revalidate every 15 minutes

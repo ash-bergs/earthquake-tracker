@@ -8,15 +8,12 @@ import earthquakeService from '@/utils/services/Earthquake';
 
 export const weeklyTopMagnitudeEventsAtom = atom<Feature<Point>[]>([]);
 
-/* ----------------------------------- NEW ---------------------------------- */
 export const allWeeklyEventsAtom = atom<Promise<Earthquakes | undefined>>(
   async () => {
     const data = await earthquakeService.fetchWeeklyStats();
     return data;
   }
 );
-
-/* ----------------------------------- END ---------------------------------- */
 
 export const weeklyTopEventsAtom = atom(async (get) => {
   const weeklyEvents = await get(allWeeklyEventsAtom);
