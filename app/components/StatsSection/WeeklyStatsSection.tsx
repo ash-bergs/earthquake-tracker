@@ -8,7 +8,7 @@ import TotalEarthquakes from './TotalEarthquakes';
 import WeeklyEarthquakeChart from '../Charts/WeeklyEarthquakeChart';
 
 const WeeklyStatsSection = () => {
-  const weekRange = useAtomValue(store.weekly.currentWeekRangeStringAtom);
+  const weekRange = useAtomValue(store.date.currentWeekRangeStringAtom);
   const weeklyEvents = useAtomValue(store.weekly.allWeeklyEventsAtom);
   const activeLocations = useAtomValue(store.weekly.weeklyActiveLocationsAtom);
   const topEvents = useAtomValue(store.weekly.weeklyTopEventsAtom);

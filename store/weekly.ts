@@ -3,7 +3,7 @@ import { Feature, Point, FeatureCollection } from 'geojson';
 import { Earthquakes } from '@/types';
 import { EarthquakeFeature, EventsDateAndCount } from '@/types';
 import * as mapStore from './map';
-import { getStartOfRange, getMostActiveLocations } from './utils';
+import { getMostActiveLocations } from './utils';
 
 export const weeklyTopMagnitudeEventsAtom = atom<Feature<Point>[]>([]);
 
@@ -72,16 +72,4 @@ export const weeklyLayerGeoJSONAtom = atom((get) => {
   };
 
   return earthquakeGeoJSON;
-});
-
-// Sneaky, smelly helpers
-//TODO: investigate improving these/making more reliable - moment js? a better ts option?
-export const currentDateAtom = atom(new Date());
-
-// current week's range (ending with today's date)
-export const currentWeekRangeStringAtom = atom((get) => {
-  const currentDate = get(currentDateAtom);
-  const startOfRange = getStartOfRange(currentDate);
-
-  return `${startOfRange.toLocaleDateString()} - ${currentDate.toLocaleDateString()}`;
 });

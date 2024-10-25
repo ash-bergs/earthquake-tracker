@@ -7,7 +7,7 @@ import TotalEarthquakes from './TotalEarthquakes';
 import DailyEarthquakeChart from '../Charts/DailyEarthquakeChart';
 
 const DailyStatsSection = () => {
-  const atomDate = useAtomValue(store.weekly.currentDateAtom);
+  const atomDate = useAtomValue(store.date.currentDateAtom);
   const dailyEvents = useAtomValue(store.daily.allDailyEventsAtom);
   const topEvents = useAtomValue(store.daily.dailyTopEventsAtom);
   const activeLocations = useAtomValue(store.daily.dailyActiveLocationsAtom);
