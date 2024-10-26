@@ -33,14 +33,14 @@ const ToolPanel = () => {
     >
       <div className="pb-4 flex gap-2 p-4 items-center justify-between">
         <div className="flex gap-2 items-center">
-          <FaScrewdriverWrench size="25px" />
-          <h2 className="text-2xl text-blue-800 font-semibold">Tool Panel</h2>
+          <FaScrewdriverWrench size="20px" />
+          <h2 className="text-xl text-blue-800 font-semibold">Tool Panel</h2>
         </div>
         <button onClick={() => setToolPanelOpen(!toolPanelOpen)}>
           {toolPanelOpen ? (
-            <FaChevronDown size="20px" />
+            <FaChevronDown size="16px" />
           ) : (
-            <FaChevronUp size="20px" />
+            <FaChevronUp size="16px" />
           )}
         </button>
       </div>
