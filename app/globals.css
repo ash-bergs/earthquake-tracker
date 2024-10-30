@@ -6,12 +6,12 @@ html,
 body {
   min-height: 100%;
   margin: 0;
-  background: rgb(235, 255, 253);
-  background: linear-gradient(
+  background: rgb(40, 71, 68);
+  /* background: linear-gradient(
     0deg,
     rgba(18, 108, 120, 1) 0%,
     rgba(235, 255, 253, 1) 100%
-  );
+  ); */
 }
 
 #root,
@@ -20,7 +20,7 @@ body {
 }
 
 body {
-  background-color: #cdfffd;
+  background-color: #bdc1c1;
 }
 
 @layer utilities {

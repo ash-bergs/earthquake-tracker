@@ -46,7 +46,7 @@ export const dailyTopEventsAtom = atom(async (get) => {
       (a: EarthquakeFeature, b: EarthquakeFeature) =>
         b.properties?.mag - a.properties?.mag
     )
-    .slice(0, 3);
+    .slice(0, 5);
 });
 
 export const dailyActiveLocationsAtom = atom(async (get) => {

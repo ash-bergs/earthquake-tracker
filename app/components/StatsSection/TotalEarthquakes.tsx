@@ -16,7 +16,7 @@ const TotalEarthquakes = ({ totalCount, maxValue }: TotalEarthquakesProps) => {
   return (
     <div
       className="flex flex-col  p-4 bg-white text-blue-900 shadow-sm rounded-lg border-[0.75px] border-gray-100"
-      style={{ minWidth: '250px' }}
+      style={{ maxHeight: '350px' }}
     >
       <p className="text-lg font-semibold text-blue-800">Total Earthquakes</p>
       {/** Tooltip icon */}

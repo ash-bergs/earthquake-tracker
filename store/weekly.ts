@@ -25,7 +25,7 @@ export const weeklyTopEventsAtom = atom(async (get) => {
       (a: EarthquakeFeature, b: EarthquakeFeature) =>
         b.properties?.mag - a.properties?.mag
     )
-    .slice(0, 3);
+    .slice(0, 5);
 });
 
 export const weeklyActiveLocationsAtom = atom(async (get) => {

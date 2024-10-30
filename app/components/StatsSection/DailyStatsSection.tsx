@@ -23,8 +23,8 @@ const DailyStatsSection = () => {
   if (!dailyEvents) return null; //TODO: return spinner
 
   return (
-    <div className="p-10 ">
-      <div className="flex flex-col gap-6 md:flex-row md:flex-wrap justify-center">
+    <div className="p-6">
+      <div className="flex flex-col gap-6">
         {/* Calendar and Total area */}
         <div className="flex flex-col gap-4">
           <div
@@ -34,14 +34,19 @@ const DailyStatsSection = () => {
           >
             <p className="text-4xl font-bold text-blue-800">Today</p>
           </div>
+
           <BreakdownCalendar calendarDate={currentDate} calendarText="Date" />
-          <TotalEarthquakes totalCount={totalCount} maxValue={100} />
+          <div className="grid grid-cols-[2fr_auto] gap-4">
+            <TotalEarthquakes totalCount={totalCount} maxValue={100} />
+            <MostActiveLocations locations={activeLocations} />
+            {/**TODO: Add a "Highest Magnitude" event like the small most active location one */}
+          </div>
         </div>
 
         {/** Events Graph and Most Active area */}
         {/**TODO: make nivo graph responsive without hard-coded height */}
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm sm:w-[100%] md:w-[325px] lg:w-[400px] xl:w-[100%] border-[0.75px] border-gray-100">
+          <div className="bg-white rounded-lg p-4">
             <p className="text-lg font-semibold text-blue-800">
               Events Throughout Day
             </p>
@@ -49,7 +54,6 @@ const DailyStatsSection = () => {
               <DailyEarthquakeChart />
             </div>
           </div>
-          <MostActiveLocations locations={activeLocations} />
         </div>
 
         {/** Top 3 of the Day */}
@@ -57,7 +61,7 @@ const DailyStatsSection = () => {
           <h2 className="text-lg font-semibold text-blue-800">
             Notable Events
           </h2>
-          <div className="flex flex-col justify-center flex-wrap gap-6 ">
+          <div className="flex justify-center flex-wrap gap-6 ">
             {topEvents &&
               topEvents.map((event) => {
                 return (

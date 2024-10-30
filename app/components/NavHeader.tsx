@@ -12,7 +12,7 @@ const activeStyles =
 const NavHeader = () => {
   const pathname = usePathname();
   return (
-    <div className="flex items-center h-[10px] bg-gray-200 gap-6 px-6 py-10 text-blue-700 font-lg shadow-md">
+    <div className="flex items-center h-[5px] bg-gray-100 gap-6 p-8 text-blue-700 font-lg shadow-lg">
       <Link
         className="transform transition-transform duration-300 hover:scale-110"
         href="/"
